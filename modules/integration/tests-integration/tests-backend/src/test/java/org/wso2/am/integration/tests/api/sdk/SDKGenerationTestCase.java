@@ -75,6 +75,9 @@ public class SDKGenerationTestCase extends APIMIntegrationBaseTest {
         //login to API publisher as first tenant admin to create the API
         apiPublisher = new APIPublisherRestClient(publisherURLHttp);
         apiPublisher.login(apiProvider, firstTenantAdminPassword);
+        //Wait till CommonConfigDeployer finishes adding the default set of policies to the database after tenant admin
+        //login, if not api creation fails since Unlimited resource tier is not available in database.
+        waitForAPIDeployment();
         //prepare API to create and publish
         String apiContext = "testContext";
         String url = "https://localhost:9443/test";
@@ -101,13 +104,13 @@ public class SDKGenerationTestCase extends APIMIntegrationBaseTest {
         //we can use the apiProvider as the user name hence this is a login to the same tenant domain
         String sdkLanguage = "java";
         boolean isSDKGenerationSuccessfulInSameTenant = generateSDK(apiProvider, firstTenantAdminPassword, apiName,
-                apiVersion, apiProvider, sdkLanguage);
+                apiVersion, apiProvider, sdkLanguage, firstTenantDomain);
 
         //check for SDK generation across tenant domains
         //(i.e - tenant admin of second tenant should log into the API store)
         boolean isSDKGenerationSuccessfulAcrossTenants = generateSDK
                 (secondTenantAdminUserName + "@" + secondTenantDomain, secondTenantAdminPassword, apiName, apiVersion,
-                        apiProvider, sdkLanguage);
+                        apiProvider, sdkLanguage, firstTenantDomain);
         Assert.assertTrue(isSDKGenerationSuccessfulInSameTenant && isSDKGenerationSuccessfulAcrossTenants);
     }
 
@@ -143,14 +146,13 @@ public class SDKGenerationTestCase extends APIMIntegrationBaseTest {
         //we can use the apiProvider as the user name hence this is a login to the same tenant domain
         String sdkLanguage = "java";
         boolean isSDKGenerationSuccessfulInSameTenant = generateSDK(apiProvider, firstTenantAdminPassword, apiName,
-                apiVersion, apiProvider, sdkLanguage);
+                apiVersion, apiProvider, sdkLanguage, firstTenantDomain);
 
         //check for SDK generation when API is private
         //(i.e - tenant admin of second tenant should log into the API store)
         boolean isSDKGenerationSuccessfulForPrivateAPIs = generateSDK
                 (secondTenantAdminUserName + "@" + secondTenantDomain, secondTenantAdminPassword, apiName, apiVersion,
-                        apiProvider, sdkLanguage);
-
+                        apiProvider, sdkLanguage, firstTenantDomain);
         Assert.assertTrue(isSDKGenerationSuccessfulInSameTenant);
     }
 
@@ -167,13 +169,13 @@ public class SDKGenerationTestCase extends APIMIntegrationBaseTest {
      * @throws Exception if SDK generation failed
      */
     private boolean generateSDK(String tenantAwareUserName, String password, String apiName, String apiVersion,
-                                String apiProvider, String language) throws Exception {
+                                String apiProvider, String language, String tenant) throws Exception {
 
         APIStoreRestClient apiStore = new APIStoreRestClient(storeURLHttp);
         apiStore.login(tenantAwareUserName, password);
         //using org.apache.http.HttpResponse because we need to write the response to a file using a byte array
         org.apache.http.HttpResponse sdkGenerationResponse = apiStore.generateSDKUpdated(language, apiName,
-                apiVersion, apiProvider);
+                apiVersion, apiProvider, tenant);
 
         Header header = sdkGenerationResponse.getFirstHeader("Content-disposition");
         if(header == null) {

@@ -14,7 +14,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-usertLocation=`pwd`
+userLocation=`pwd`
 pathToApiManagerXML='../repository/conf/api-manager.xml'
 pathToAxis2XML='../repository/conf/axis2/axis2.xml'
 pathToRegistry='../repository/conf/registry.xml'
@@ -22,6 +22,10 @@ pathToInboundEndpoints='../repository/deployment/server/synapse-configs/default/
 pathToWebapps='../repository/deployment/server/webapps'
 pathToJaggeryapps='../repository/deployment/server/jaggeryapps'
 pathToSynapseConfigs='../repository/deployment/server/synapse-configs/default'
+pathToAxis2TMXml='../repository/conf/axis2/axis2_TM.xml'
+pathToRegistryTM='../repository/conf/registry_TM.xml'
+pathToAxis2XMLBackup='../repository/conf/axis2/axis2backup.xml'
+pathToRegistryBackup='../repository/conf/registryBackup.xml'
 timestamp=""
 cd `dirname "$0"`
 
@@ -31,9 +35,15 @@ timeStamp() {
 
 disableDataPublisher(){
 	value=`xmllint --xpath '//DataPublisher/Enabled/text()' $pathToApiManagerXML`
+	kernel=$(uname -s)
 	if [ "$value" = "true" ]
 	then
-		sed -i "/<DataPublisher>/,/<\/DataPublisher>/ s/<Enabled>true<\/Enabled>/<Enabled>false<\/Enabled>/g;" $pathToApiManagerXML
+		if [ "$kernel" = "Darwin" ]
+		then
+			sed -i '' -e "/<DataPublisher>/,/<\/DataPublisher>/ s/<Enabled>true<\/Enabled>/<Enabled>false<\/Enabled>/g;" $pathToApiManagerXML
+		else
+			sed -i "/<DataPublisher>/,/<\/DataPublisher>/ s/<Enabled>true<\/Enabled>/<Enabled>false<\/Enabled>/g;" $pathToApiManagerXML
+		fi
 		timeStamp
 		echo "[${timestamp}] INFO - Disabled the <DataPublisher> from api-manager.xml file"
 	fi
@@ -41,9 +51,15 @@ disableDataPublisher(){
 
 disableJMSConnectionDetails(){
 	value=`xmllint --xpath '//JMSConnectionDetails/Enabled/text()' $pathToApiManagerXML`
+	kernel=$(uname -s)
 	if [ "$value" = "true" ]
 	then
-		sed -i "/<JMSConnectionDetails>/,/<\/JMSConnectionDetails>/ s/<Enabled>true<\/Enabled>/<Enabled>false<\/Enabled>/g;" $pathToApiManagerXML
+		if [ "$kernel" = "Darwin" ]
+		then
+			sed -i '' -e "/<JMSConnectionDetails>/,/<\/JMSConnectionDetails>/ s/<Enabled>true<\/Enabled>/<Enabled>false<\/Enabled>/g;" $pathToApiManagerXML
+		else
+			sed -i "/<JMSConnectionDetails>/,/<\/JMSConnectionDetails>/ s/<Enabled>true<\/Enabled>/<Enabled>false<\/Enabled>/g;" $pathToApiManagerXML	
+		fi
 		timeStamp
   	    	echo "[${timestamp}] INFO - Disabled the <JMSConnectionDetails> from api-manager.xml file"
 	fi
@@ -51,9 +67,15 @@ disableJMSConnectionDetails(){
 
 disablePolicyDeployer(){
 	value=`xmllint --xpath '//PolicyDeployer/Enabled/text()' $pathToApiManagerXML`
+	kernel=$(uname -s)
 	if [ "$value" = "true" ]
 	then
-		sed -i "/<PolicyDeployer>/,/<\/PolicyDeployer>/ s/<Enabled>true<\/Enabled>/<Enabled>false<\/Enabled>/g;" $pathToApiManagerXML
+		if [ "$kernel" = "Darwin" ]
+		then
+			sed -i '' -e "/<PolicyDeployer>/,/<\/PolicyDeployer>/ s/<Enabled>true<\/Enabled>/<Enabled>false<\/Enabled>/g;" $pathToApiManagerXML
+		else
+			sed -i "/<PolicyDeployer>/,/<\/PolicyDeployer>/ s/<Enabled>true<\/Enabled>/<Enabled>false<\/Enabled>/g;" $pathToApiManagerXML	
+		fi
 		timeStamp
 		echo "[${timestamp}] INFO - Disabled the <PolicyDeployer> from api-manager.xml file"
 	fi
@@ -61,12 +83,18 @@ disablePolicyDeployer(){
 
 disableTransportSenderWS(){
 	value=`grep -E '"ws"' $pathToAxis2XML`
+	kernel=$(uname -s)
 	if [ -n "$value" ]
 	then
 		value=`grep -E '<!--.*"ws"' $pathToAxis2XML`
 		if [ -z "$value" ]
 		then
-			sed -i '/<transportSender name="ws" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">/,/<\/transportSender>/s/\(.*\)/<!--\1-->/' $pathToAxis2XML
+			if [ "$kernel" = "Darwin" ]
+			then
+				sed -i '' -e '/<transportSender name="ws" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">/,/<\/transportSender>/s/\(.*\)/<!--\1-->/' $pathToAxis2XML
+			else
+				sed -i '/<transportSender name="ws" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">/,/<\/transportSender>/s/\(.*\)/<!--\1-->/' $pathToAxis2XML	
+			fi
 			timeStamp
 			echo "[${timestamp}] INFO - Disabled the <transportSender name=\"ws\" class=\"org.wso2.carbon.websocket.transport.WebsocketTransportSender\"> from axis2.xml file"
 		fi
@@ -75,12 +103,18 @@ disableTransportSenderWS(){
 
 disableTransportSenderWSS(){
 	value=`grep -E '"wss"' $pathToAxis2XML`
+	kernel=$(uname -s)
 	if [ -n "$value" ]
 	then
 		value=`grep -E '<!--.*"wss"' $pathToAxis2XML`
 		if [ -z "$value" ]
 		then
-			sed -i '/<transportSender name="wss" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">/,/<\/transportSender>/s/\(.*\)/<!--\1-->/' $pathToAxis2XML
+			if [ "$kernel" = "Darwin" ]
+			then
+				sed -i '' -e '/<transportSender name="wss" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">/,/<\/transportSender>/s/\(.*\)/<!--\1-->/' $pathToAxis2XML
+			else
+				sed -i '/<transportSender name="ws" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">/,/<\/transportSender>/s/\(.*\)/<!--\1-->/' $pathToAxis2XML	
+			fi
 			timeStamp
 			echo "[${timestamp}] INFO - Disabled the <transportSender name=\"wss\" class=\"org.wso2.carbon.websocket.transport.WebsocketTransportSender\"> from axis2.xml file"
 		fi
@@ -108,8 +142,14 @@ removeSecureWebSocketInboundEndpoint(){
 disableIndexingConfiguration(){
 	value=`xmllint --xpath 'wso2registry/indexingConfiguration/startIndexing/text()' $pathToRegistry`
 	if [ "$value" = "true" ]
+	kernel=$(uname -s)
 	then
-		sed -i "/<indexingConfiguration>/,/<\/indexingConfiguration>/ s/<startIndexing>true<\/startIndexing>/<startIndexing>false<\/startIndexing>/g;" $pathToRegistry
+		if [ "$kernel" = "Darwin" ]
+		then
+			sed -i '' -e "/<indexingConfiguration>/,/<\/indexingConfiguration>/ s/<startIndexing>true<\/startIndexing>/<startIndexing>false<\/startIndexing>/g;" $pathToRegistry
+		else
+			sed -i "/<indexingConfiguration>/,/<\/indexingConfiguration>/ s/<startIndexing>true<\/startIndexing>/<startIndexing>false<\/startIndexing>/g;" $pathToRegistry	
+		fi
 		timeStamp
 		echo "[${timestamp}] INFO - Disabled the <indexingConfiguration> from registry.xml file"
 	fi
@@ -129,6 +169,30 @@ removeSynapseConfigs(){
 		timeStamp
 		echo "[${timestamp}] INFO - Removed the $file file from $pathToSynapseConfigs"
 	done
+}
+
+replaceAxis2File(){
+    if [ -e $pathToAxis2XML ] && [ -e $pathToAxis2TMXml ]
+	then
+	    mv $pathToAxis2XML $pathToAxis2XMLBackup
+		timeStamp
+		echo "[${timestamp}] INFO - Rename the existing $pathToAxis2XML file as axis2backup.xml"
+		mv $pathToAxis2TMXml $pathToAxis2XML
+		timeStamp
+		echo "[${timestamp}] INFO - Rename the existing $pathToAxis2TMXml file as axis2.xml"
+	fi
+}
+
+replaceRegistryXMLFile(){
+    if [ -e $pathToRegistry ] && [ -e $pathToRegistryTM ]
+	then
+        mv $pathToRegistry $pathToRegistryBackup
+		timeStamp
+		echo "[${timestamp}] INFO - Rename the existing $pathToRegistry file as registryBackup.xml"
+		mv $pathToRegistryTM $pathToRegistry
+		timeStamp
+		echo "[${timestamp}] INFO - Rename the existing $pathToRegistryTM file as registry.xml"
+	fi
 }
 
 #main
@@ -228,8 +292,8 @@ case $1 in
         ;;
 	-Dprofile=traffic-manager)
 		echo "Starting to optimize API Manager for the Traffic Manager profile"
-		disableTransportSenderWS
-		disableTransportSenderWSS
+		replaceAxis2File
+		replaceRegistryXMLFile
 		disableIndexingConfiguration
 		removeWebSocketInboundEndpoint
 		removeSecureWebSocketInboundEndpoint
@@ -283,10 +347,10 @@ case $1 in
 		done
 		;;
 	*)
-		echo "Profile is not specifed properly, please try again"
-		cd $usertLocation
+		echo "Profile is not specified properly, please try again"
+		cd $userLocation
 		exit
 esac
 
 echo Finished the optimizations
-cd $usertLocation
+cd $userLocation

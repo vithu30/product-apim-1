@@ -92,4 +92,20 @@ public final class APIImportExportConstants {
     public static final String CHARSET = "UTF-8";
 
     public static final String AUTHENTICATION_ADMIN_SERVICE_ENDPOINT = "AuthenticationAdmin";
+
+    public static final String MIGRATION_MODE = "migrationMode";
+
+    public static final String META_INFO_DIRECTORY = "Meta-information";
+
+    public static final String ENDPOINTS_CERTIFICATE_FILE = "endpoint_certificates.json";
+
+    public static final String HOSTNAME_JSON_KEY = "hostName";
+
+    public static final String ALIAS_JSON_KEY = "alias";
+
+    public static final String CERTIFICATE_CONTENT_JSON_KEY = "certificate";
+
+    public static final String SEARCH_TYPE_CONTEXT = "Context";
+
+    public static final String SEARCH_TYPE_NAME = "Name";
 }

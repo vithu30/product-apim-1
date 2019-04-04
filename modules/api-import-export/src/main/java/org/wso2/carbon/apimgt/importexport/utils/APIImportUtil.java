@@ -20,6 +20,7 @@ package org.wso2.carbon.apimgt.importexport.utils;
 
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -246,7 +247,7 @@ public final class APIImportUtil {
             }
 
             //Checking whether this is a duplicate API
-            allMatchedApis = provider.searchAPIs(importedApi.getId().getApiName(), "Name", null);
+            allMatchedApis = provider.searchAPIs(importedApi.getId().getApiName(), APIImportExportConstants.SEARCH_TYPE_NAME, null);
             //if an API exist with the same name
             if (!allMatchedApis.isEmpty()) {
                 for (API matchAPI : allMatchedApis) {
@@ -258,6 +259,16 @@ public final class APIImportUtil {
                         throw new APIImportException(errorMessage);
                     }
                 }
+            }
+
+            //Checking context duplication
+            List<API> contextMatchedApis = provider.searchAPIs(importedApi.getContext(), APIImportExportConstants.SEARCH_TYPE_CONTEXT, null);
+            if (contextMatchedApis.size() > 0) {
+                String errMsg = "Error occurred while adding the API [" + importedApi.getId().getApiName()
+                        + '-' + importedApi.getId().getVersion() + "]. A duplicate context[" + importedApi.getContext()
+                        + "] already exists";
+                log.error(errMsg);
+                throw new APIImportException(errMsg);
             }
 
         } catch (IOException e) {
@@ -298,7 +309,7 @@ public final class APIImportUtil {
         }
 
         try {
-
+            importedApi.setAsDefaultVersion(false);
             provider.addAPI(importedApi);
 
             //Swagger definition will only be available of API type HTTP. Web socket api does not have it.
@@ -708,6 +719,42 @@ public final class APIImportUtil {
     private static boolean checkFileExistence(String fileLocation) {
         File testFile = new File(fileLocation);
         return testFile.exists();
+    }
+
+    /**
+     * This method import endpoint certificate
+     *
+     * @param pathToArchive location of the extracted folder of the API
+     * @param importedApi the imported API object
+     * @throws APIImportException
+     */
+    private static void addEndpointCertificates(String pathToArchive, API importedApi)
+            throws APIImportException {
+        String pathToJSONFile = pathToArchive + File.separator + APIImportExportConstants.META_INFO_DIRECTORY +
+                File.separator + APIImportExportConstants.ENDPOINTS_CERTIFICATE_FILE;
+        try {
+            String jsonContent = FileUtils.readFileToString(new File(pathToJSONFile));
+            JsonElement configElement = new JsonParser().parse(jsonContent);
+            JsonArray certificates = configElement.getAsJsonArray().getAsJsonArray();
+            for (JsonElement certificate : certificates) {
+                String certificate_content = certificate.getAsJsonObject().
+                        get(APIImportExportConstants.CERTIFICATE_CONTENT_JSON_KEY).getAsString();
+                String alias = certificate.getAsJsonObject().get(APIImportExportConstants.ALIAS_JSON_KEY).getAsString();
+                String endpoint = certificate.getAsJsonObject().get(APIImportExportConstants.HOSTNAME_JSON_KEY).getAsString();
+                try {
+                    provider.addCertificate(APIUtil.replaceEmailDomainBack(importedApi.getId().getProviderName()), certificate_content, alias, endpoint);
+                } catch (APIManagementException e) {
+                    String errorMessage = "Error while importing certificate endpoint [" + endpoint + " ]" + "alias [" +
+                            alias + " ] tenantuser [" +  APIUtil.replaceEmailDomainBack(importedApi.getId().getProviderName()) + "]";
+                    log.error(errorMessage, e);
+                    continue;
+                }
+            }
+        } catch (IOException e) {
+            String errorMessage = "Error in reading " + APIImportExportConstants.ENDPOINTS_CERTIFICATE_FILE + "file";
+            log.error(errorMessage, e);
+            throw new APIImportException(errorMessage, e);
+        }
     }
 }
 

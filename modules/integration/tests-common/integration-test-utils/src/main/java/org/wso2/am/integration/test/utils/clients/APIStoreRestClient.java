@@ -33,7 +33,9 @@ import org.wso2.am.integration.test.utils.bean.SubscriptionRequest;
 import org.wso2.am.integration.test.utils.http.HTTPSClientUtils;
 import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
 import org.wso2.carbon.automation.extensions.servers.httpserver.SimpleHttpClient;
+import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
+import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -116,6 +118,25 @@ public class APIStoreRestClient {
     }
 
     /**
+     * Subscribe to API using a particular action
+     *
+     * @param subscriptionRequest - subscribe api request
+     * @return - http response
+     * @throws org.wso2.am.integration.test.utils.APIManagerIntegrationTestException - throws if subscription fails
+     */
+    public HttpResponse subscribe(SubscriptionRequest subscriptionRequest, String action)
+            throws APIManagerIntegrationTestException {
+        try {
+            checkAuthentication();
+            return HTTPSClientUtils.doPost(new URL(
+                            backendURL + "store/site/blocks/subscription/subscription-add/ajax/subscription-add.jag"),
+                    subscriptionRequest.generateRequestParameters(action), requestHeaders);
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Subscription to api fails. Error: " + e.getMessage(), e);
+        }
+    }
+
+    /**
      * Generate token
      *
      * @param generateAppKeyRequest - generate api key request
@@ -129,6 +150,28 @@ public class APIStoreRestClient {
             HttpResponse responseApp = getAllApplications();
             String appId = getApplicationId(responseApp.getData(), generateAppKeyRequest.getApplication());
             generateAppKeyRequest.setAppId(appId);
+
+            return HTTPSClientUtils.doPost(
+                    new URL(backendURL + "store/site/blocks/subscription/subscription-add/ajax/subscription-add.jag"),
+                    generateAppKeyRequest.generateRequestParameters(), requestHeaders);
+
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Key generation fails. Error: " + e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * Generate token
+     *
+     * @param generateAppKeyRequest - generate api key request
+     * @return - http response
+     * @throws org.wso2.am.integration.test.utils.APIManagerIntegrationTestException - throws if application key generation fails.
+     */
+    public HttpResponse generateApplicationKeyById(APPKeyRequestGenerator generateAppKeyRequest)
+            throws APIManagerIntegrationTestException {
+        try {
+            checkAuthentication();
 
             return HTTPSClientUtils.doPost(
                     new URL(backendURL + "store/site/blocks/subscription/subscription-add/ajax/subscription-add.jag"),
@@ -255,6 +298,25 @@ public class APIStoreRestClient {
     }
 
     /**
+     * Get application by ID
+     *
+     * @return - http response of get of application
+     * @throws org.wso2.am.integration.test.utils.APIManagerIntegrationTestException - throws if get application fails.
+     */
+    public HttpResponse getApplicationById(int applicationId) throws APIManagerIntegrationTestException {
+        try {
+            checkAuthentication();
+            return HTTPSClientUtils.doGet(
+                    backendURL + "store/site/blocks/application/application-list/ajax/" +
+                            "application-list.jag?action=getApplicationById&appId=" + applicationId,
+                    requestHeaders);
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Unable to retrieve all applications. " +
+                    "Error: " + e.getMessage(), e);
+        }
+    }
+
+    /**
      * Get application details by given name
      *
      * @param applicationName - application name
@@ -276,6 +338,28 @@ public class APIStoreRestClient {
                                                          + ". Error: " + e.getMessage(), e);
         }
 
+    }
+
+    /**
+     * Get application details by given name
+     *
+     * @param applicationName - application name
+     * @return - http response of get application request
+     * @throws org.wso2.am.integration.test.utils.APIManagerIntegrationTestException - throws if get application by name fails
+     */
+    public HttpResponse getPublishedAPIsByApplicationId(String applicationName, int applicationId)
+            throws APIManagerIntegrationTestException {
+        try {
+            checkAuthentication();
+            return HTTPSClientUtils.doGet(
+                    backendURL + "store/site/blocks/subscription/subscription-list/ajax/" +
+                            "subscription-list.jag?action=getSubscriptionForApplicationById&app=" +
+                            applicationName + "&appId=" + applicationId, requestHeaders);
+
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Unable to retrieve the application -  " + applicationName
+                    + ". Error: " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -418,6 +502,30 @@ public class APIStoreRestClient {
         }
     }
 
+    /**
+     * Clean up application registration by ID
+     *
+     * @param applicationId - application ID
+     * @param applicationName  - application name
+     * @return - http response of paginated published APIs
+     * @throws org.wso2.am.integration.test.utils.APIManagerIntegrationTestException - throws if paginated apis cannot be retrieved.
+     */
+    public HttpResponse cleanUpApplicationRegistrationByApplicationId(int applicationId, String applicationName)
+            throws APIManagerIntegrationTestException {
+        try {
+            checkAuthentication();
+            String requestData =
+                    "action=cleanUpApplicationRegistrationByApplicationId&appId=" + applicationId + "&applicationName="
+                            + applicationName + "&keyType=PRODUCTION";
+            return HTTPSClientUtils.doPost(new URL(
+                    backendURL + "store/site/blocks/subscription/subscription-add/ajax/subscription-add.jag?"
+                            + requestData), "", requestHeaders);
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Unable to cleanup application - "
+                    + applicationName + ". Error: " + e.getMessage(), e);
+        }
+    }
+
 
     /**
      * Gell all paginated published apis for a given tenant
@@ -492,6 +600,33 @@ public class APIStoreRestClient {
         }
     }
 
+    /**
+     * Add application with Group
+     *
+     * @param application - application  name
+     * @param tier        - throttling tier
+     * @param callbackUrl - callback url
+     * @param description - description of app
+     * @param groupId     - group to share
+     * @return - http response of add application
+     * @throws org.wso2.am.integration.test.utils.APIManagerIntegrationTestException - if fails to add application
+     */
+    public HttpResponse addApplicationWithGroup(String application, String tier, String callbackUrl,
+            String description, String groupId)
+            throws APIManagerIntegrationTestException {
+        try {
+            checkAuthentication();
+            return HTTPSClientUtils.doPost(
+                    new URL(backendURL +
+                            "store/site/blocks/application/application-add" +
+                            "/ajax/application-add.jag?action=addApplication&tier=" +
+                            tier + "&callbackUrl=" + callbackUrl + "&description=" + description +
+                            "&application=" + application + "&groupId=" + groupId), "", requestHeaders);
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Unable to add application - " + application
+                    + ". Error: " + e.getMessage(), e);
+        }
+    }
 
     /**
      * Add application with token type
@@ -563,6 +698,26 @@ public class APIStoreRestClient {
     }
 
     /**
+     * Delete application by Id
+     *
+     * @param applicationId - application Id
+     * @return - http response of remove application request
+     * @throws org.wso2.am.integration.test.utils.APIManagerIntegrationTestException - throws if remove application fails
+     */
+    public HttpResponse removeApplicationById(int applicationId)
+            throws APIManagerIntegrationTestException {
+        try {
+            checkAuthentication();
+            return HTTPSClientUtils.doPost(
+                    new URL(backendURL + "store/site/blocks/application/application-remove/ajax/application-remove.jag?" +
+                            "action=removeApplicationById&appId=" + applicationId), "", requestHeaders);
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Unable to remove application - " + applicationId
+                    + ". Error: " + e.getMessage(), e);
+        }
+    }
+
+    /**
      * Update given application
      *
      * @param applicationOld - application name old
@@ -593,6 +748,35 @@ public class APIStoreRestClient {
     }
 
     /**
+     * Update given application
+     *
+     * @param applicationOld - application name old
+     * @param applicationNew - new  application name
+     * @param callbackUrlNew - call back url
+     * @param descriptionNew - updated description
+     * @param tier           - access tier
+     * @return - http response of update application
+     * @throws org.wso2.am.integration.test.utils.APIManagerIntegrationTestException - throws if update application fails
+     */
+    public HttpResponse updateApplicationById(int applicationId, String applicationOld, String applicationNew,
+            String callbackUrlNew, String descriptionNew, String tier) throws APIManagerIntegrationTestException {
+        try {
+            checkAuthentication();
+            return HTTPSClientUtils.doPost(
+                    new URL(backendURL + "store/site/blocks/application/application-update/ajax/application-update.jag?" +
+                            "action=updateApplicationById&applicationOld=" + applicationOld + "&applicationNew=" +
+                            applicationNew + "&appId=" + applicationId + "&callbackUrlNew=" + callbackUrlNew + "&descriptionNew=" +
+                            descriptionNew + "&tier=" + tier), "", requestHeaders);
+
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Unable to update application - " + applicationOld
+                    + ". Error: " + e.getMessage(), e);
+
+        }
+
+    }
+
+    /**
      * Update given Auth application
      *
      * @param application       auth application name
@@ -615,6 +799,36 @@ public class APIStoreRestClient {
                                                    retryAfterFailure + "&jsonParams=" + URLEncoder.encode(jsonParams, "UTF-8")
                                                     + "&callbackUrl=" + callbackUrl), "",
                                            requestHeaders);
+
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException(
+                    "Unable to update application - " + application + ". Error: " + e.getMessage(), e);
+
+        }
+    }
+
+    /**
+     * Update given Auth application
+     *
+     * @param application       auth application name
+     * @param keyType           type of the key
+     * @param authorizedDomains authorized domains
+     * @param retryAfterFailure retry after fail
+     * @param jsonParams        json parameters for grant type
+     * @param callbackUrl       call back url
+     * @return Http response of the update request
+     * @throws APIManagerIntegrationTestException APIManagerIntegrationTestException - throws if update application fail
+     */
+    public HttpResponse updateClientApplicationById(int applicationId, String application, String keyType, String authorizedDomains,
+            String retryAfterFailure, String jsonParams, String callbackUrl) throws APIManagerIntegrationTestException {
+        try {
+            checkAuthentication();
+            return HTTPSClientUtils.doPost(new URL(
+                    backendURL + "/store/site/blocks/subscription/subscription-add/ajax/subscription-add.jag?"
+                            + "action=updateClientApplicationByAppId&appId=" + applicationId + "&application="
+                            + application + "&keytype=" + keyType + "&authorizedDomains=" + authorizedDomains
+                            + "&retryAfterFailure=" + retryAfterFailure + "&jsonParams=" + URLEncoder
+                            .encode(jsonParams, "UTF-8") + "&callbackUrl=" + callbackUrl), "", requestHeaders);
 
         } catch (Exception e) {
             throw new APIManagerIntegrationTestException(
@@ -1058,6 +1272,50 @@ public class APIStoreRestClient {
             throw new APIManagerIntegrationTestException("Error in user sign up. Error: " + e.getMessage(), e);
         }
     }
+    /**
+     * API Store sign up
+     *
+     * @param userName - store user name
+     * @param password -store password
+     * @param claims   - tenants claims
+     * @return
+     * @throws APIManagerIntegrationTestException
+     */
+    public HttpResponse signUpforTenant(String userName, String password, String claims) throws
+            APIManagerIntegrationTestException {
+        try {
+            Map<String, String> requestHeaders = new HashMap<String, String>();
+            requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+            return HttpRequestUtil.doPost(new URL(backendURL + "/store/site/blocks/user/sign-up/ajax/user-add.jag?tenant=wso2.com"),
+                    "action=addUser&username=" + userName + "&password=" + password + "&allFieldsValues=" +
+                            claims, requestHeaders);
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Error in user sign up. Error: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * API Store sign up with organization
+     * @param userName - store user name
+     * @param password -store password
+     * @param firstName - user first name
+     * @param lastName - user's last name
+     * @param email - user's email
+     * @param  organization - user's organization
+     * @return
+     * @throws APIManagerIntegrationTestException
+     *
+     */
+    public HttpResponse signUpWithOrganization(String userName, String password, String firstName, String lastName, String email,
+            String organization) throws APIManagerIntegrationTestException {
+        try {
+            return HTTPSClientUtils.doPost(new URL(backendURL + "store/site/blocks/user/sign-up/ajax/user-add.jag"),
+                    "action=addUser&username=" + userName + "&password=" + password + "&allFieldsValues=" + firstName
+                            + "|" + lastName + "|" + organization + "|" + email, requestHeaders);
+        } catch (Exception e) {
+            throw new APIManagerIntegrationTestException("Error in user sign up. Error: " + e.getMessage(), e);
+        }
+    }
 
     /**
      * Get Prototyped APIs in Store
@@ -1210,7 +1468,8 @@ public class APIStoreRestClient {
         if (executionMode.equalsIgnoreCase(String.valueOf(ExecutionEnvironment.PLATFORM))) {
             try {
                 checkAuthentication();
-                response = HTTPSClientUtils.doGet(backendURL + "store/api-docs/" + userName + "/" +
+                String tenant = MultitenantUtils.getTenantDomain(userName);
+                response = HTTPSClientUtils.doGet(backendURL + "store/api-docs/" + tenant + "/" +
                                                           apiName + "/" + apiVersion, null);
             } catch (IOException ex) {
                 throw new APIManagerIntegrationTestException("Exception when get APO page filtered by tag"
@@ -1254,14 +1513,15 @@ public class APIStoreRestClient {
      * @throws APIManagerIntegrationTestException if failed to generate the SDK
      */
     public org.apache.http.HttpResponse generateSDKUpdated(String sdkLanguage, String apiName, String apiVersion,
-                                                           String apiProvider) throws APIManagerIntegrationTestException {
+                                                           String apiProvider, String tenant)
+            throws APIManagerIntegrationTestException {
 
         try {
             checkAuthentication();
             SimpleHttpClient httpClient = new SimpleHttpClient();
             String restURL = backendURL + "store/site/blocks/sdk/ajax/sdk-create.jag?" +
-                    "action=generateSDK&apiName=" + apiName + "&apiVersion=" + apiVersion + "&apiProvider=" +
-                    apiProvider + "&language=java";
+                    "action=generateSDK&apiName=" + apiName + "&apiVersion=" + apiVersion + "&tenant=" +
+                    tenant + "&language=java";
             //response is org.apache.http.HttpResponse, because we need to write it to a file
             return httpClient.doGet(restURL, requestHeaders);
         } catch (IOException e) {

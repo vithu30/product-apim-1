@@ -37,7 +37,7 @@
             <!--<class name="org.wso2.am.integration.tests.api.lifecycle.APIMANAGER5337SubscriptionRetainTestCase"/>-->
             <!--<class name="org.wso2.am.integration.tests.api.lifecycle.APIPublishingAndVisibilityInStoreTestCase"/>-->
             <!--<class name="org.wso2.am.integration.tests.api.lifecycle.AccessibilityOfDeprecatedOldAPIAndPublishedCopyAPITestCase"/>-->
-            <class name="org.wso2.am.integration.tests.api.lifecycle.NewVersionUpdateTestCase"/>
+            <class name="org.wso2.am.integration.tests.api.lifecycle.APIVisibilityByDomainTestCase"/>
             <!--<class name="org.wso2.am.integration.tests.other.NotificationTestCase"/>-->
             <!--<class name="org.wso2.am.integration.tests.sequence.DefaultEndpointTestCase"/>-->
         </classes>

@@ -50,6 +50,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Base test class for all API Manager lifecycle test cases. This class contents the all the
@@ -215,6 +217,30 @@ public class APIManagerLifecycleBaseTest extends APIMIntegrationBaseTest {
     }
 
     /**
+     * Delete a API from API Publisher.
+     *
+     * @param apiIdentifier       - Instance of APIIdentifier object  that include the  API Name, API Version and
+     *                            API Provider.
+     * @param publisherRestClient - Instance of RestAPIPublisherImpl.
+     * @throws APIManagerIntegrationTestException - Exception throws by the method call of deleteApi() in
+     *                                            APIPublisherRestClient.java.
+     */
+    protected void deleteAPI(String apiID,APIIdentifier apiIdentifier, RestAPIPublisherImpl publisherRestClient)
+            throws APIManagerIntegrationTestException {
+        try {
+            HttpResponse deleteHTTPResponse = publisherRestClient.deleteAPI(apiID);
+            if (!(deleteHTTPResponse.getResponseCode() == HTTP_RESPONSE_CODE_OK)) {
+                throw new APIManagerIntegrationTestException("Error in API Deletion." +
+                        getAPIIdentifierString(apiIdentifier) + " API Context :" + deleteHTTPResponse +
+                        "Response Code:" + deleteHTTPResponse.getResponseCode() +
+                        " Response Data :" + deleteHTTPResponse.getData());
+            }
+        } catch (ApiException e) {
+            throw new APIManagerIntegrationTestException("Error when deleting API with ID: " + apiID, e);
+        }
+    }
+
+    /**
      * Retrieve  the value from JSON object bu using the key.
      *
      * @param httpResponse - Response that containing the JSON object in it response data.
@@ -292,6 +318,13 @@ public class APIManagerLifecycleBaseTest extends APIMIntegrationBaseTest {
         publishUpdateRequest.setVersion(apiIdentifier.getVersion());
         return publisherRestClient.changeAPILifeCycleStatusToPublish(apiIdentifier, isRequireReSubscription);
 
+    }
+
+    protected HttpResponse publishAPI(String apiID, RestAPIPublisherImpl publisherRestClient,
+                                      boolean isRequireReSubscription) throws ApiException {
+
+        return publisherRestClient.changeAPILifeCycleStatus(apiID,
+                APILifeCycleAction.PUBLISH.getAction(),null);
     }
 
     /**

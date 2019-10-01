@@ -39,9 +39,12 @@ import org.wso2.am.admin.clients.service.mgt.ServiceAdminClient;
 import org.wso2.am.admin.clients.tasks.TaskAdminClient;
 import org.wso2.am.admin.clients.template.EndpointTemplateAdminServiceClient;
 import org.wso2.am.admin.clients.template.SequenceTemplateAdminServiceClient;
+import org.wso2.am.integration.clients.publisher.api.v1.dto.APIInfoDTO;
+import org.wso2.am.integration.clients.publisher.api.v1.dto.APIListDTO;
 import org.wso2.am.integration.test.utils.APIManagerIntegrationTestException;
 import org.wso2.am.integration.test.utils.bean.APIBean;
 import org.wso2.carbon.apimgt.api.model.APIIdentifier;
+import org.wso2.am.integration.clients.publisher.api.v1.dto.APIDTO;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.endpoint.stub.types.EndpointAdminEndpointAdminException;
 import org.wso2.carbon.localentry.stub.types.LocalEntryAdminException;
@@ -1774,5 +1777,47 @@ public class APIMTestCaseUtils {
             buf.append(hexDigits[aByte & 0x0f]);
         }
         return buf.toString();
+    }
+
+    /**
+     * Check  the given API is available in the APIIdentifier List. it will match for API Name,API Version and API Provider
+     *
+     * @param apiIdentifier - API DTO to verify
+     * @param apiListDTO    - API Info DTO list
+     * @return - Status of API availability
+     */
+    public static boolean isAPIAvailable(APIIdentifier apiIdentifier,
+                                         APIListDTO apiListDTO) {
+        boolean isFound = false;
+        for (APIInfoDTO api : apiListDTO.getList()) {
+            if (apiIdentifier.getName().equals(api.getName()) &&
+                    apiIdentifier.getVersion().equals(api.getVersion()) &&
+                    apiIdentifier.getProviderName().equals(api.getProvider())) {
+                isFound = true;
+                break;
+            }
+        }
+        return isFound;
+    }
+
+    /**
+     * Check  the given API is available in the APIIdentifier List. it will match for API Name,API Version and API Provider
+     *
+     * @param apiIdentifier - API DTO to verify
+     * @param apiListDTO    - API Info DTO list
+     * @return - Status of API availability
+     */
+    public static boolean isAPIAvailableInStore(APIIdentifier apiIdentifier,
+                    org.wso2.am.integration.clients.store.api.v1.dto.APIListDTO apiListDTO) {
+        boolean isFound = false;
+        for (org.wso2.am.integration.clients.store.api.v1.dto.APIInfoDTO api : apiListDTO.getList()) {
+            if (apiIdentifier.getName().equals(api.getName()) &&
+                    apiIdentifier.getVersion().equals(api.getVersion()) &&
+                    apiIdentifier.getProviderName().equals(api.getProvider())) {
+                isFound = true;
+                break;
+            }
+        }
+        return isFound;
     }
 }

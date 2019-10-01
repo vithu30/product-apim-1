@@ -3,6 +3,7 @@ package org.wso2.am.integration.test;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONArray;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -67,8 +68,14 @@ public class ClientAuthenticator {
             String clientEncoded = DatatypeConverter.printBase64Binary(
                     (consumerKey + ':' + consumerSecret).getBytes(StandardCharsets.UTF_8));
             urlConn.setRequestProperty("Authorization", "Basic " + clientEncoded);
-            String postParams = "grant_type=client_credentials";
+            String postParams;
+            if ("password".equals(grantType)) {
+                postParams = "grant_type=password&username="+ username + "&password=" + password;
+            } else {
+                postParams= "grant_type=client_credentials";
+            }
             if (!scopeList.isEmpty()) {
+                System.out.println("scopeeee list " + scopeList);
                 postParams += "&scope=" + scopeList;
             }
             urlConn.setHostnameVerifier(new HostnameVerifier() {
@@ -115,6 +122,7 @@ public class ClientAuthenticator {
             json.addProperty("clientName", applicationName);
             json.addProperty("tokenScope", tokenScope);
             json.addProperty("grantType", grantType);
+            json.addProperty("saasApp", true);
 
             String clientEncoded;
 

@@ -55,7 +55,7 @@ public class RestAPIStoreImpl {
     public static final String callBackURL = "test.com";
     public static final String tokenScope = "Production";
     public static final String appOwner = "admin";
-    public static final String grantType = "password client_credentials";
+    public static final String grantType = "client_credentials";
     public static final String dcrEndpoint = "http://127.0.0.1:10263/client-registration/v0.14/register";
     public static final String username = "admin";
     public static final String password = "admin";
@@ -64,18 +64,21 @@ public class RestAPIStoreImpl {
 
 
     public RestAPIStoreImpl(){
-        this(username, password, tenantDomain);
+        this(username, password, tenantDomain, grantType);
     }
 
     public RestAPIStoreImpl(String username, String password, String tenantDomain) {
+        this(username, password, tenantDomain, grantType);
+    }
 
+    public RestAPIStoreImpl(String username, String password, String tenantDomain, String grantType) {
         String scopes = "openid apim:subscribe apim:app_update apim:app_manage apim:sub_manage " +
                 "apim:self-signup apim:dedicated_gateway apim:store_settings";
 
         String accessToken = ClientAuthenticator
                 .getAccessToken(scopes,
                         appName, callBackURL, tokenScope, appOwner, grantType, dcrEndpoint, username, password, tenantDomain, tokenEndpoint);
-
+        System.out.println("^^^^^^^^^^^^^^ Store tokens " + tenantDomain + accessToken);
         apiStoreClient.addDefaultHeader("Authorization", "Bearer " + accessToken);
         apiStoreClient.setBasePath("https://localhost:9943/api/am/store/v1.0");
         apIsApi.setApiClient(apiStoreClient);
@@ -228,17 +231,8 @@ public class RestAPIStoreImpl {
      * @return - http response of get all published apis
      * @throws APIManagerIntegrationTestException - throws if getting publish APIs fails
      */
-    public HttpResponse getAllPublishedAPIs() throws APIManagerIntegrationTestException {
-//        try {
-//            checkAuthentication();
-//            return HTTPSClientUtils.doGet(
-//                    backendURL + "store/site/blocks/api/listing/ajax/list.jag?action=getAllPublishedAPIs",
-//                    requestHeaders);
-//        } catch (Exception e) {
-//            throw new APIManagerIntegrationTestException("Unable to get retrieve all published APIs. " +
-//                    "Error: " + e.getMessage(), e);
-//        }
-        return null;
+    public APIListDTO getAllPublishedAPIs() throws ApiException {
+        return apIsApi.apisGet(null,0,null,null,null);
     }
 
     /**
@@ -526,19 +520,8 @@ public class RestAPIStoreImpl {
      * @return - http response of published API
      * @throws APIManagerIntegrationTestException - throws if published API retrieval fails.
      */
-    public HttpResponse getAllPublishedAPIs(String tenant)
-            throws APIManagerIntegrationTestException {
-//        try {
-//            checkAuthentication();
-//            return HTTPSClientUtils.doPost(
-//                    new URL(backendURL + "store/site/blocks/api/listing/ajax/list.jag?action=getAllPublishedAPIs&tenant=" +
-//                            tenant), "", requestHeaders);
-//        } catch (Exception e) {
-//            throw new APIManagerIntegrationTestException("Unable to retrieve published APIs for tenant - " + tenant
-//                    + ". Error: " + e.getMessage(), e);
-//
-//        }
-        return null;
+    public APIListDTO getAllPublishedAPIs(String tenantDomain) throws ApiException {
+        return apIsApi.apisGet(null,0,tenantDomain,null,null);
     }
 
     /**

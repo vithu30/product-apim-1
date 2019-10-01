@@ -70,7 +70,7 @@ public class RestAPIPublisherImpl {
     public static final String callBackURL = "test.com";
     public static final String tokenScope = "Production";
     public static final String appOwner = "admin";
-    public static final String grantType = "client_credentials";
+    public static final String grantType = "password client_credentials";
     public static final String dcrEndpoint = "http://127.0.0.1:10263/client-registration/v0.14/register";
     public static final String username = "admin";
     public static final String password = "admin";
@@ -93,7 +93,7 @@ public class RestAPIPublisherImpl {
                                 "apim:client_certificates_update apim:ep_certificates_view " +
                                 "apim:ep_certificates_add apim:ep_certificates_update apim:publisher_settings apim:pub_alert_manage",
                         appName, callBackURL, tokenScope, appOwner, grantType, dcrEndpoint, username, password, tenantDomain, tokenEndpoint);
-
+        System.out.println("^^^^^^^^^^^^^^ " + tenantDomain + accessToken);
         apiPublisherClient.addDefaultHeader("Authorization", "Bearer " + accessToken);
         apiPublisherClient.setBasePath("https://localhost:9943/api/am/publisher/v1.0");
         apIsApi.setApiClient(apiPublisherClient);
@@ -138,7 +138,12 @@ public class RestAPIPublisherImpl {
         body.setName(apiRequest.getName());
         body.setContext(apiRequest.getContext());
         body.setVersion(apiRequest.getVersion());
-        body.setVisibility(APIDTO.VisibilityEnum.PUBLIC);
+        System.out.println("sssssssssssssssssssssssssss " + apiRequest.getVisibility());
+        if (apiRequest.getVisibility() != null) {
+            body.setVisibility(APIDTO.VisibilityEnum.PRIVATE);
+        } else {
+            body.setVisibility(APIDTO.VisibilityEnum.PUBLIC);
+        }
         body.setDescription(apiRequest.getDescription());
         body.setProvider(apiRequest.getProvider());
         body.setTransport(new ArrayList<String>() {{
@@ -514,7 +519,7 @@ public class RestAPIPublisherImpl {
      */
     public APIListDTO getAllAPIs(String tenantDomain) throws APIManagerIntegrationTestException, ApiException {
 
-        APIListDTO apis = apIsApi.apisGet(null, null, null, null, null, null, null, tenantDomain);
+        APIListDTO apis = apIsApi.apisGet(null, null, tenantDomain, null, null, null, null, tenantDomain);
         if (apis.getCount() > 0) {
             return apis;
         }

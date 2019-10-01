@@ -104,18 +104,26 @@ public class APIVisibilityByDomainTestCase extends APIManagerLifecycleBaseTest {
         restAPIPublisherCarbonSuperUser1 = new RestAPIPublisherImpl(
                 publisherContext.getContextTenant().getTenantUser(USER_KEY_USER2).getUserName(),
                 publisherContext.getContextTenant().getTenantUser(USER_KEY_USER2).getPassword(),
-                "carbon.super"
+                "carbon.super",
+                "https://localhost:9943/",
+                "https://localhost:8743/",
+                "https://localhost:9943"
         );
         restAPIStoreCarbonSuperUser1 = new RestAPIStoreImpl(
                 publisherContext.getContextTenant().getTenantUser(USER_KEY_USER2).getUserName(),
                 publisherContext.getContextTenant().getTenantUser(USER_KEY_USER2).getPassword(),
-                "carbon.super"
+                "carbon.super",
+                "https://localhost:9943",
+                "https://localhost:8743",
+                "https://localhost:9943"
         );
 
         restAPIPublisherCarbonSuperAdmin = new RestAPIPublisherImpl(
-                "admin", "admin", "carbon.super");
+                "admin", "admin", "carbon.super", "https://localhost:9943/", "https://localhost:8743/",
+                "https://localhost:9943");
         restAPIStoreCarbonSuperAdmin = new RestAPIStoreImpl(
-                "admin", "admin", "carbon.super");
+                "admin", "admin", "carbon.super", "https://localhost:9943","https://localhost:8743/"
+                ,"https://localhost:9943");
 
         apiCreatorStoreDomain = storeContext.getContextTenant().getDomain();
 
@@ -123,11 +131,17 @@ public class APIVisibilityByDomainTestCase extends APIManagerLifecycleBaseTest {
         restAPIPublisherCarbonSuperUser2 = new RestAPIPublisherImpl(
                 storeContext.getContextTenant().getTenantUser(CARBON_SUPER_TENANT2_KEY).getUserName(),
                 storeContext.getContextTenant().getTenantUser(CARBON_SUPER_TENANT2_KEY).getPassword(),
-                "carbon.super");
+                "carbon.super",
+                "https://localhost:9943/",
+                "https://localhost:8743/",
+                "https://localhost:9943");
         restAPIStoreCarbonSuperUser2 = new RestAPIStoreImpl(
                 publisherContext.getContextTenant().getTenantUser(CARBON_SUPER_TENANT2_KEY).getUserName(),
                 publisherContext.getContextTenant().getTenantUser(CARBON_SUPER_TENANT2_KEY).getPassword(),
-                "carbon.super");
+                "carbon.super",
+                "https://localhost:9943",
+                "https://localhost:8743/",
+                "https://localhost:9943");
 
         //Creating Tenant contexts
         init(TENANT_DOMAIN_KEY, TENANT_DOMAIN_ADMIN_KEY);
@@ -137,21 +151,29 @@ public class APIVisibilityByDomainTestCase extends APIManagerLifecycleBaseTest {
         restAPIPublisherOtherDomainUser1 = new RestAPIPublisherImpl(
                 storeContext.getContextTenant().getTenantUser(OTHER_DOMAIN_TENANT_USER_KEY).getUserName(),
                 storeContext.getContextTenant().getTenantUser(OTHER_DOMAIN_TENANT_USER_KEY).getPassword(),
-                otherDomain);
+                otherDomain,
+                "https://localhost:9943/",
+                "https://localhost:8743/",
+                "https://localhost:9943/");
         restAPIStoreOtherDomainUser1 = new RestAPIStoreImpl(
                 publisherContext.getContextTenant().getTenantUser(OTHER_DOMAIN_TENANT_USER_KEY).getUserName(),
                 publisherContext.getContextTenant().getTenantUser(OTHER_DOMAIN_TENANT_USER_KEY).getPassword(),
-                otherDomain, "password");
+                otherDomain, "https://localhost:9943/", "https://localhost:8743/",
+                "https://localhost:9943/");
 
         //Login to the API Publisher adn Store as Tenant admin
         restAPIPublisherOtherDomainAdmin = new RestAPIPublisherImpl(
                 storeContext.getContextTenant().getContextUser().getUserName(),
                 storeContext.getContextTenant().getContextUser().getPassword(),
-                otherDomain);
+                otherDomain,
+                "https://localhost:9943/",
+                "https://localhost:8743/",
+                "https://localhost:9943/");
         restAPIStoreOtherDomainAdmin = new RestAPIStoreImpl(
                 publisherContext.getContextTenant().getContextUser().getUserName(),
                 publisherContext.getContextTenant().getContextUser().getPassword(),
-                otherDomain, "password");
+                otherDomain, "https://localhost:9943/", "https://localhost:8743/"
+                ,"https://localhost:9943/");
     }
 
 

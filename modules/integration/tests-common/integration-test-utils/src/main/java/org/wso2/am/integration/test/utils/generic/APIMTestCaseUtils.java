@@ -74,6 +74,7 @@ import java.security.Signature;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -1706,6 +1707,41 @@ public class APIMTestCaseUtils {
                 log.error("Error when extraction data from JSON" + e.getMessage());
                 throw new APIManagerIntegrationTestException("Error when extraction data from JSON", e);
             }
+        }
+        return apiIdentifierList;
+    }
+
+    /**
+     * @param apiListDTO
+     * @return
+     * @throws APIManagerIntegrationTestException
+     */
+    public static List<APIIdentifier> getAPIIdentifierListFromHttpResponse(APIListDTO apiListDTO) {
+        if (apiListDTO == null) {
+            return Collections.emptyList();
+        }
+        List<APIIdentifier> apiIdentifierList = new ArrayList<>();
+        for (APIInfoDTO apiInfoDTO : apiListDTO.getList()) {
+            apiIdentifierList
+                    .add(new APIIdentifier(apiInfoDTO.getProvider(), apiInfoDTO.getName(), apiInfoDTO.getVersion()));
+        }
+        return apiIdentifierList;
+    }
+
+    /**
+     * @param apiListDTO
+     * @return
+     * @throws APIManagerIntegrationTestException
+     */
+    public static List<APIIdentifier> getAPIIdentifierListFromHttpResponse(
+            org.wso2.am.integration.clients.store.api.v1.dto.APIListDTO apiListDTO) {
+        if (apiListDTO == null) {
+            return Collections.emptyList();
+        }
+        List<APIIdentifier> apiIdentifierList = new ArrayList<>();
+        for (org.wso2.am.integration.clients.store.api.v1.dto.APIInfoDTO apiInfoDTO : apiListDTO.getList()) {
+            apiIdentifierList
+                    .add(new APIIdentifier(apiInfoDTO.getProvider(), apiInfoDTO.getName(), apiInfoDTO.getVersion()));
         }
         return apiIdentifierList;
     }

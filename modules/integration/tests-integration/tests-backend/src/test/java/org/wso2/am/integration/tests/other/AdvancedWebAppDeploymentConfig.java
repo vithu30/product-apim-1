@@ -22,16 +22,19 @@ package org.wso2.am.integration.tests.other;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.testng.ITestContext;
+import org.testng.Reporter;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.wso2.am.admin.clients.webapp.WebAppAdminClient;
 import org.wso2.am.integration.clients.store.api.v1.dto.ApplicationDTO;
+import org.wso2.am.integration.clients.store.api.v1.dto.SubscriptionDTO;
 import org.wso2.am.integration.test.utils.base.APIMIntegrationConstants;
-import org.wso2.am.integration.test.utils.bean.APICreationRequestBean;
+import org.wso2.am.integration.test.utils.bean.APIRequest;
 import org.wso2.am.integration.test.utils.generic.TestConfigurationProvider;
 import org.wso2.am.integration.test.utils.webapp.WebAppDeploymentUtil;
 import org.wso2.am.integration.tests.api.lifecycle.APIManagerLifecycleBaseTest;
-import org.wso2.carbon.apimgt.api.model.APIIdentifier;
+import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import java.io.File;
 import java.net.URL;
@@ -42,10 +45,11 @@ public class AdvancedWebAppDeploymentConfig extends APIManagerLifecycleBaseTest 
     private String apiEndPointUrl;
     private String providerName;
     private WebAppAdminClient webAppAdminClient;
-    private APIIdentifier apiIdentifier;
+    private String apiId;
+    private String applicationID;
 
     @BeforeTest(alwaysRun = true)
-    public void deployWebApps() throws Exception {
+    public void deployWebApps(ITestContext ctx) throws Exception {
         super.init();
         String fileFormat = ".war";
         String webApp = "jaxrs_basic";
@@ -74,36 +78,42 @@ public class AdvancedWebAppDeploymentConfig extends APIManagerLifecycleBaseTest 
                 .isWebApplicationDeployed(gatewayContextWrk.getContextUrls().getBackEndUrl(), sessionId, webAppName);
         log.info("Web App Deployed");
 
-        initialize();
+        initialize(ctx);
     }
 
     @AfterTest(alwaysRun = true)
     public void cleanUpArtifacts() throws Exception {
-        restAPIStore.removeApplication(APPLICATION_NAME);
-        super.cleanUp();
+        restAPIStore.deleteApplication(applicationID);
+        restAPIPublisher.deleteAPI(apiId);
     }
 
-    private void initialize() throws Exception {
+    private void initialize(ITestContext ctx) throws Exception {
         apiEndPointUrl = backEndServerUrl.getWebAppURLHttp() + API_END_POINT_POSTFIX_URL;
         providerName = user.getUserName();
-        createAPIs();
+        createAPIs(ctx);
     }
 
-    private void createAPIs() throws Exception {
-        //Create application
-        ApplicationDTO dto = restAPIStore.addApplication(APPLICATION_NAME,
-                APIMIntegrationConstants.APPLICATION_TIER.DEFAULT_APP_POLICY_FIFTY_REQ_PER_MIN, "", "");
+    private void createAPIs(ITestContext ctx) throws Exception {
+
+        HttpResponse applicationResponse = restAPIStore.createApplication(APPLICATION_NAME,
+                "Test Application", APIMIntegrationConstants.APPLICATION_TIER.DEFAULT_APP_POLICY_FIFTY_REQ_PER_MIN,
+                ApplicationDTO.TokenTypeEnum.OAUTH);
+        applicationID = applicationResponse.getData();
         //Create publish and subscribe a API
-        apiIdentifier = new APIIdentifier(providerName, API_NAME, API_VERSION_1_0_0);
-        APICreationRequestBean apiCreationRequestBean = new APICreationRequestBean(API_NAME, API_CONTEXT,
-                API_VERSION_1_0_0, providerName, new URL(apiEndPointUrl));
-        apiCreationRequestBean.setSubPolicyCollection(APIMIntegrationConstants.API_TIER.GOLD);
-        apiCreationRequestBean.setTags(API_TAGS);
-        apiCreationRequestBean.setDescription(API_DESCRIPTION);
-        createPublishAndSubscribeToAPI(apiIdentifier, apiCreationRequestBean, restAPIPublisher,
-                restAPIStore, dto.getApplicationId(), APIMIntegrationConstants.API_TIER.GOLD);
+        APIRequest apiRequest;
+        apiRequest = new APIRequest(API_NAME, API_CONTEXT, new URL(apiEndPointUrl));
+
+        apiRequest.setVersion(API_VERSION_1_0_0);
+        apiRequest.setTiersCollection(APIMIntegrationConstants.API_TIER.UNLIMITED);
+        apiRequest.setTier(APIMIntegrationConstants.API_TIER.UNLIMITED);
+        apiRequest.setTags(API_TAGS);
+
+        apiId = createPublishAndSubscribeToAPIUsingRest(apiRequest, restAPIPublisher, restAPIStore, applicationID,
+                APIMIntegrationConstants.API_TIER.UNLIMITED);
         waitForAPIDeploymentSync(user.getUserName(), API_NAME, API_VERSION_1_0_0,
                 APIMIntegrationConstants.IS_API_EXISTS);
+        ctx.setAttribute("apiId", apiId);
+        ctx.setAttribute("applicationID", applicationID);
     }
 
 }

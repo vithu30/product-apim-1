@@ -179,6 +179,10 @@ public class RestAPIPublisherImpl {
         tierList.add(Constants.TIERS_UNLIMITED);
         body.setPolicies(Arrays.asList(apiRequest.getTiersCollection().split(",")));
         body.isDefaultVersion(Boolean.valueOf(apiRequest.getDefault_version_checked()));
+        if (apiRequest.getAccessControl() != null) {
+            body.setAccessControl(APIDTO.AccessControlEnum.valueOf(apiRequest.getAccessControl()));
+            body.setAccessControlRoles(new ArrayList<>(Arrays.asList(apiRequest.getAccessControlRoles().split(","))));
+        }
         APIDTO apidto;
         try {
             ApiResponse<APIDTO> httpInfo = apIsApi.apisPostWithHttpInfo(body, osVersion);

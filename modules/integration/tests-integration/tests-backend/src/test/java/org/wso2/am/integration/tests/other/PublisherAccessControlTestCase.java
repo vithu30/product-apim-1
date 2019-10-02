@@ -27,10 +27,13 @@ import org.wso2.am.integration.test.utils.base.APIMIntegrationBaseTest;
 import org.wso2.am.integration.test.utils.bean.APIRequest;
 import org.wso2.am.integration.test.utils.clients.APIPublisherRestClient;
 import org.wso2.am.integration.test.utils.clients.APIStoreRestClient;
+import org.wso2.am.integration.tests.api.lifecycle.APIVisibilityByPublicTestCase;
 import org.wso2.carbon.apimgt.api.model.APIIdentifier;
+import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.integration.common.admin.client.UserManagementClient;
 import org.wso2.carbon.user.mgt.stub.UserAdminUserAdminException;
+import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -66,6 +69,7 @@ public class PublisherAccessControlTestCase extends APIMIntegrationBaseTest {
     private String accessControlledPublicVisibilityAPI = "AccessControlledPublicVisibility";
     private final String restrictedAccessRestrictedVisibilityAPI = "RestrictedAccessRestrictedVisibility";
     private RestAPIPublisherImpl restAPIPublisher;
+    private RestAPIPublisherImpl restAPIPublisherFirstUser;
     private String apiID;
     UserManagementClient userManagementClient1;
 
@@ -99,15 +103,14 @@ public class PublisherAccessControlTestCase extends APIMIntegrationBaseTest {
         userManagementClient1
                 .addUser(PUB_SUB_USER, USER_PASSWORD, new String[] { PUB_SUB_ROLE }, PUB_SUB_USER);
 
+        restAPIPublisher = new RestAPIPublisherImpl(contextUsername, contextUserPassword,
+                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME, keyManagerHTTPSURL, gatewayHTTPSURL, publisherURLHttp);
 
     }
 
     @Test(groups = "wso2.am", description = "This test case tests the retrieval of API which was added with a access "
             + "control restriction.")
     public void testAPIAdditionWithAccessControlRestriction() throws Exception {
-        restAPIPublisher = new RestAPIPublisherImpl(contextUsername, contextUserPassword, "carbon.super",
-                keyManagerHTTPSURL, gatewayHTTPSURL, publisherURLHttp);
-
         APIRequest brokenApiRequest = new APIRequest(publisherAccessControlAPI, publisherAccessControlAPI,
                 new URL(EP_URL));
         brokenApiRequest.setVersion(VERSION);
@@ -116,20 +119,20 @@ public class PublisherAccessControlTestCase extends APIMIntegrationBaseTest {
         brokenApiRequest.setAccessControlRoles(FIRST_ROLE);
         APIDTO apidto = restAPIPublisher.addAPI(brokenApiRequest, "v3");
         apiID = apidto.getId();
+        System.out.println("################3 " + apiID);
 
+        APIDTO response = restAPIPublisher.getAPIByID(apiID, MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
+        Assert.assertTrue(response.getAccessControlRoles().contains(FIRST_ROLE),
+                "API is not visible to the APIM admin user");
 
-        APIDTO response = restAPIPublisher.getAPIByID(apiID, "carbon.super");
-        System.out.println("Responseeeeeee " + response.getAccessControlRoles());
-        Assert.assertTrue(response.getAccessControlRoles().contains(FIRST_ROLE), "API was not visible to the APIM admin user");
+        restAPIPublisherFirstUser = new RestAPIPublisherImpl(FIRST_USER, USER_PASSWORD,
+                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME, keyManagerHTTPSURL, gatewayHTTPSURL, publisherURLHttp);
+        response = restAPIPublisherFirstUser.getAPIByID(apiID, MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
+        Assert.assertTrue(response.getAccessControlRoles().contains(FIRST_ROLE),
+                "API is not visible to the creators who have the relevant access control roles of the API");
 
-//        apiPublisher.login(FIRST_USER, USER_PASSWORD);
-//        response = apiPublisher.getAPI(publisherAccessControlAPI, contextUsername);
-//        Assert.assertTrue(response.getData().contains(FIRST_ROLE),
-//                "API was not visible to the creators who have the relevant access control roles of the API");
-//        apiPublisher.logout();
-//
 //        apiPublisher.login(SECOND_USER, USER_PASSWORD);
-//        response = apiPublisher.getAPI(publisherAccessControlAPI, contextUsername);
+//        httpResponse = apiPublisher.getAPI(publisherAccessControlAPI, contextUsername);
 //        Assert.assertFalse(response.getData().contains(FIRST_ROLE),
 //                "API was visible to the creators who do not have the relevant access control roles of the API");
 
@@ -263,21 +266,43 @@ public class PublisherAccessControlTestCase extends APIMIntegrationBaseTest {
 
     @AfterClass (alwaysRun = true)
     public void destroy() throws Exception {
-        apiPublisher.deleteAPI(publisherAccessControlAPI, VERSION, contextUsername);
-        apiPublisher.deleteAPI(publicAccessRestrictedVisibilityAPI, VERSION, contextUsername);
-        apiPublisher.deleteAPI(publisherAccessControlAPI2, VERSION, contextUsername);
-        apiPublisher.deleteAPI(restrictedAccessRestrictedVisibilityAPI, VERSION, contextUsername);
-        apiPublisher.deleteAPI(accessControlledPublicVisibilityAPI, VERSION, contextUsername);
+//        apiPublisher.deleteAPI(publisherAccessControlAPI, VERSION, contextUsername);
+//        apiPublisher.deleteAPI(publicAccessRestrictedVisibilityAPI, VERSION, contextUsername);
+//        apiPublisher.deleteAPI(publisherAccessControlAPI2, VERSION, contextUsername);
+//        apiPublisher.deleteAPI(restrictedAccessRestrictedVisibilityAPI, VERSION, contextUsername);
+//        apiPublisher.deleteAPI(accessControlledPublicVisibilityAPI, VERSION, contextUsername);
+        restAPIPublisher.deleteAPIByID(apiID);
 
-        userManagementClient1.deleteUser(FIRST_USER);
-        userManagementClient1.deleteUser(SECOND_USER);
-        userManagementClient1.deleteUser(SUBSCRIBER_USER);
-        userManagementClient1.deleteUser(PUB_SUB_USER);
+//        userManagementClient1.deleteUser(FIRST_USER);
+//        userManagementClient1.deleteUser(SECOND_USER);
+//        userManagementClient1.deleteUser(SUBSCRIBER_USER);
+//        userManagementClient1.deleteUser(PUB_SUB_USER);
+//
+//        userManagementClient1.deleteRole(FIRST_ROLE);
+//        userManagementClient1.deleteRole(SECOND_ROLE);
+//        userManagementClient1.deleteRole(SUBSCRIBER_ROLE);
+//        userManagementClient1.deleteRole(PUB_SUB_ROLE);
 
-        userManagementClient1.deleteRole(FIRST_ROLE);
-        userManagementClient1.deleteRole(SECOND_ROLE);
-        userManagementClient1.deleteRole(SUBSCRIBER_ROLE);
-        userManagementClient1.deleteRole(PUB_SUB_ROLE);
+    }
 
+    public static void main(String[] args) throws Exception {
+        System.setProperty("javax.net.ssl.keyStore",
+                "/home/vithursa/Documents/APIManagementProject/new-product-apim/product-apim/modules/distribution/product/target/wso2am-3.0.0-SNAPSHOT/repository/resources/security/wso2carbon.jks");
+        System.setProperty("javax.net.ssl.trustStore",
+                "/home/vithursa/Documents/APIManagementProject/new-product-apim/product-apim/modules/distribution/product/target/wso2am-3.0.0-SNAPSHOT/repository/resources/security/client-truststore.jks");
+        System.setProperty("javax.net.ssl.keyStorePassword", "wso2carbon");
+
+        System.setProperty("framework.resource.location", "/home/vithursa/Documents/APIManagementProject/new-product-apim/product-apim/modules/integration/tests-integration/tests-backend/src/test/resources/");
+        System.setProperty("user.dir",
+                "/home/vithursa/Documents/APIManagementProject/new-product-apim/product-apim/modules/integration/tests-integration/tests-backend/src");
+        PublisherAccessControlTestCase aCase = new PublisherAccessControlTestCase();
+        aCase.initTestCase();
+
+        try {
+            aCase.testAPIAdditionWithAccessControlRestriction();
+        } finally {
+            System.out.println("ended");
+            aCase.destroy();
+        }
     }
 }

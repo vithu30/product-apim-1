@@ -48,7 +48,7 @@ public class APIRequest extends AbstractRequest {
     private String name;
     private String context;
     private org.json.simple.JSONObject endpoint;
-    private String visibility = "public";
+    private String visibility = "PUBLIC";
     private String version = "1.0.0";
     private String description = "description";
     private String endpointType = "nonsecured";

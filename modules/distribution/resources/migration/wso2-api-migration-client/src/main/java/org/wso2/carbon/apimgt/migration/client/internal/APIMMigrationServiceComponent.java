@@ -64,66 +64,69 @@ public class APIMMigrationServiceComponent {
      */
     protected void activate(ComponentContext context) {
         try {
-            APIMgtDBUtil.initialize();
+//            APIMgtDBUtil.initialize();
+            while(true) {
+                System.out.println("+++++ Activating within for loop");
+            }
         } catch (Exception e) {
             //APIMgtDBUtil.initialize() throws generic exception
             log.error("Error occurred while initializing DB Util ", e);
         }
 
-        String migrateFromVersion = System.getProperty(Constants.ARG_MIGRATE_FROM_VERSION);
-        String options = System.getProperty(Constants.ARG_OPTIONS);
-        String specificVersion = System.getProperty(Constants.ARG_RUN_SPECIFIC_VERSION);
-        String component = System.getProperty(Constants.ARG_COMPONENT);
-        String tenants = System.getProperty(Constants.ARG_MIGRATE_TENANTS);
-        String tenantRange = System.getProperty(Constants.ARG_MIGRATE_TENANTS_RANGE);
-        String blackListTenants = System.getProperty(Constants.ARG_MIGRATE_BLACKLIST_TENANTS);
-        boolean migrateAll = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_ALL));
-        boolean cleanupNeeded = Boolean.parseBoolean(System.getProperty(Constants.ARG_CLEANUP));
-        boolean isDBMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_DB));
-        boolean isRegistryMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_REG));
-        boolean isFileSystemMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_FILE_SYSTEM));
-        boolean isStatMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_STATS));
-        boolean removeDecryptionFailedKeysFromDB = Boolean.parseBoolean(
-                System.getProperty(Constants.ARG_REMOVE_DECRYPTION_FAILED_CONSUMER_KEYS_FROM_DB));
+//        String migrateFromVersion = System.getProperty(Constants.ARG_MIGRATE_FROM_VERSION);
+//        String options = System.getProperty(Constants.ARG_OPTIONS);
+//        String specificVersion = System.getProperty(Constants.ARG_RUN_SPECIFIC_VERSION);
+//        String component = System.getProperty(Constants.ARG_COMPONENT);
+//        String tenants = System.getProperty(Constants.ARG_MIGRATE_TENANTS);
+//        String tenantRange = System.getProperty(Constants.ARG_MIGRATE_TENANTS_RANGE);
+//        String blackListTenants = System.getProperty(Constants.ARG_MIGRATE_BLACKLIST_TENANTS);
+//        boolean migrateAll = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_ALL));
+//        boolean cleanupNeeded = Boolean.parseBoolean(System.getProperty(Constants.ARG_CLEANUP));
+//        boolean isDBMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_DB));
+//        boolean isRegistryMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_REG));
+//        boolean isFileSystemMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_FILE_SYSTEM));
+//        boolean isStatMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_STATS));
+//        boolean removeDecryptionFailedKeysFromDB = Boolean.parseBoolean(
+//                System.getProperty(Constants.ARG_REMOVE_DECRYPTION_FAILED_CONSUMER_KEYS_FROM_DB));
 
-        try {
-            MigrationClient accessControlMigrationClient = new AccessControlMigrationClient(tenants, blackListTenants, tenantRange, registryService, tenantManager);
-            RegistryServiceImpl registryService = new RegistryServiceImpl();
-            TenantManager tenantManager = ServiceHolder.getRealmService().getTenantManager();
-
-            MigrationClientFactory.initFactory(tenants, blackListTenants, registryService, tenantManager,
-                    removeDecryptionFailedKeysFromDB);
-
-            MigrationExecutor.Arguments arguments = new MigrationExecutor.Arguments();
-            arguments.setMigrateFromVersion(migrateFromVersion);
-            arguments.setSpecificVersion(specificVersion);
-            arguments.setComponent(component);
-            arguments.setMigrateAll(migrateAll);
-            arguments.setCleanupNeeded(cleanupNeeded);
-            arguments.setDBMigration(isDBMigration);
-            arguments.setRegistryMigration(isRegistryMigration);
-            arguments.setFileSystemMigration(isFileSystemMigration);
-            arguments.setStatMigration(isStatMigration);
-            arguments.setOptions(options);
-            MigrationExecutor.execute(arguments);
-
-            //Publisher Access Contro feature related migrations
-            accessControlMigrationClient.registryResourceMigration();
-        } catch (APIMigrationException e) {
-            log.error("API Management  exception occurred while migrating", e);
-        } catch (UserStoreException e) {
-            log.error("User store  exception occurred while migrating", e);
-        } catch (SQLException e) {
-            log.error("SQL exception occurred while migrating", e);
-        } catch (Exception e) {
-            log.error("Generic exception occurred while migrating", e);
-        } catch (Throwable t) {
-            log.error("Throwable error", t);
-        }
-        finally {
-            MigrationClientFactory.clearFactory();
-        }
-        log.info("WSO2 API Manager migration component successfully activated.");
+//        try {
+//            MigrationClient accessControlMigrationClient = new AccessControlMigrationClient(tenants, blackListTenants, tenantRange, registryService, tenantManager);
+//            RegistryServiceImpl registryService = new RegistryServiceImpl();
+//            TenantManager tenantManager = ServiceHolder.getRealmService().getTenantManager();
+//
+//            MigrationClientFactory.initFactory(tenants, blackListTenants, registryService, tenantManager,
+//                    removeDecryptionFailedKeysFromDB);
+//
+//            MigrationExecutor.Arguments arguments = new MigrationExecutor.Arguments();
+//            arguments.setMigrateFromVersion(migrateFromVersion);
+//            arguments.setSpecificVersion(specificVersion);
+//            arguments.setComponent(component);
+//            arguments.setMigrateAll(migrateAll);
+//            arguments.setCleanupNeeded(cleanupNeeded);
+//            arguments.setDBMigration(isDBMigration);
+//            arguments.setRegistryMigration(isRegistryMigration);
+//            arguments.setFileSystemMigration(isFileSystemMigration);
+//            arguments.setStatMigration(isStatMigration);
+//            arguments.setOptions(options);
+//            MigrationExecutor.execute(arguments);
+//
+//            //Publisher Access Contro feature related migrations
+//            accessControlMigrationClient.registryResourceMigration();
+//        } catch (APIMigrationException e) {
+//            log.error("API Management  exception occurred while migrating", e);
+//        } catch (UserStoreException e) {
+//            log.error("User store  exception occurred while migrating", e);
+//        } catch (SQLException e) {
+//            log.error("SQL exception occurred while migrating", e);
+//        } catch (Exception e) {
+//            log.error("Generic exception occurred while migrating", e);
+//        } catch (Throwable t) {
+//            log.error("Throwable error", t);
+//        }
+//        finally {
+//            MigrationClientFactory.clearFactory();
+//        }
+//        log.info("WSO2 API Manager migration component successfully activated.");
     }
 
     /**

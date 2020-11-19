@@ -710,8 +710,8 @@ public class RestAPIPublisherImpl {
      * @throws ApiException - Exception throws if error occurred when adding document.
      */
     public HttpResponse addContentDocument(String apiId, String docId, String docContent) throws ApiException {
-        DocumentDTO doc = apiDocumentsApi.apisApiIdDocumentsDocumentIdContentPost(apiId, docId, null, docContent,
-                null);
+        DocumentDTO doc = apiDocumentsApi.apisApiIdDocumentsDocumentIdContentPost(apiId, docId, null, null,
+                docContent);
         HttpResponse response = null;
         if (StringUtils.isNotEmpty(doc.getDocumentId())) {
             response = new HttpResponse("Successfully created the documentation", 200);
@@ -729,7 +729,7 @@ public class RestAPIPublisherImpl {
      * @throws ApiException - Exception throws if error occurred when adding document.
      */
     public HttpResponse updateContentDocument(String apiId, String docId, File docContent) throws ApiException {
-        DocumentDTO doc = apiDocumentsApi.apisApiIdDocumentsDocumentIdContentPost(apiId, docId, docContent, null,
+        DocumentDTO doc = apiDocumentsApi.apisApiIdDocumentsDocumentIdContentPost(apiId, docId, null, docContent,
                 null);
         HttpResponse response = null;
         if (StringUtils.isNotEmpty(doc.getDocumentId())) {
@@ -985,7 +985,7 @@ public class RestAPIPublisherImpl {
 
     public OpenAPIDefinitionValidationResponseDTO validateOASDefinition(File oasDefinition) throws ApiException {
         ApiResponse<OpenAPIDefinitionValidationResponseDTO> response =
-                validationApi.validateOpenAPIDefinitionWithHttpInfo(null, oasDefinition, false);
+                validationApi.validateOpenAPIDefinitionWithHttpInfo(false,null, oasDefinition);
         Assert.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
         return response.getData();
     }
@@ -1013,8 +1013,8 @@ public class RestAPIPublisherImpl {
     }
 
     public APIDTO importGraphqlSchemaDefinition(File file, String properties) throws ApiException {
-        ApiResponse<APIDTO> apiDtoApiResponse = apIsApi.apisImportGraphqlSchemaPostWithHttpInfo("GRAPHQL", file,
-                properties, null);
+        ApiResponse<APIDTO> apiDtoApiResponse = apIsApi.apisImportGraphqlSchemaPostWithHttpInfo(null,"GRAPHQL",
+                file, properties);
         Assert.assertEquals(HttpStatus.SC_CREATED, apiDtoApiResponse.getStatusCode());
         return apiDtoApiResponse.getData();
     }
@@ -1112,7 +1112,8 @@ public class RestAPIPublisherImpl {
      * @throws ApiException if an error occurred while uploading the certificate.
      */
     public HttpResponse uploadCertificate(File certificate, String alias, String apiId, String tier) throws ApiException {
-        ClientCertMetadataDTO certificateDTO = clientCertificatesApi.apisApiIdClientCertificatesPost(certificate, alias, apiId, tier);
+        ClientCertMetadataDTO certificateDTO = clientCertificatesApi.apisApiIdClientCertificatesPost(apiId, certificate,
+                alias, tier);
         HttpResponse response = null;
         if (StringUtils.isNotEmpty(certificateDTO.getAlias())) {
             response = new HttpResponse("Successfully uploaded the certificate", 200);

@@ -29,27 +29,36 @@ Generate keys (Consumer key/secret) for application
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-ApplicationKeyGenerateRequestDTO body = new ApplicationKeyGenerateRequestDTO(); // ApplicationKeyGenerateRequestDTO | Application key generation request object 
-try {
-    ApplicationKeyDTO result = apiInstance.applicationsApplicationIdGenerateKeysPost(applicationId, body);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdGenerateKeysPost");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    ApplicationKeyGenerateRequestDTO body = new ApplicationKeyGenerateRequestDTO(); // ApplicationKeyGenerateRequestDTO | Application key generation request object 
+    try {
+      ApplicationKeyDTO result = apiInstance.applicationsApplicationIdGenerateKeysPost(applicationId, body);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdGenerateKeysPost");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -73,6 +82,14 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: application/json
 
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Keys are generated.  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource to be updated does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
+
 <a name="applicationsApplicationIdKeysGet"></a>
 # **applicationsApplicationIdKeysGet**
 > ApplicationKeyListDTO applicationsApplicationIdKeysGet(applicationId)
@@ -84,26 +101,35 @@ Retrieve keys (Consumer key/secret) of application
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-try {
-    ApplicationKeyListDTO result = apiInstance.applicationsApplicationIdKeysGet(applicationId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysGet");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    try {
+      ApplicationKeyListDTO result = apiInstance.applicationsApplicationIdKeysGet(applicationId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -123,8 +149,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Keys are returned.  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
 
 <a name="applicationsApplicationIdKeysKeyTypeCleanUpPost"></a>
 # **applicationsApplicationIdKeysKeyTypeCleanUpPost**
@@ -137,27 +171,36 @@ Clean up keys after failed key generation of an application
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-String keyType = "keyType_example"; // String | **Application Key Type** standing for the type of the keys (i.e. Production or Sandbox). 
-String ifMatch = "ifMatch_example"; // String | Validator for conditional requests; based on ETag. 
-try {
-    apiInstance.applicationsApplicationIdKeysKeyTypeCleanUpPost(applicationId, keyType, ifMatch);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysKeyTypeCleanUpPost");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    String keyType = "keyType_example"; // String | **Application Key Type** standing for the type of the keys (i.e. Production or Sandbox). 
+    String ifMatch = "ifMatch_example"; // String | Validator for conditional requests; based on ETag. 
+    try {
+      apiInstance.applicationsApplicationIdKeysKeyTypeCleanUpPost(applicationId, keyType, ifMatch);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysKeyTypeCleanUpPost");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -179,8 +222,16 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Clean up is performed  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource to be updated does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
 
 <a name="applicationsApplicationIdKeysKeyTypeGet"></a>
 # **applicationsApplicationIdKeysKeyTypeGet**
@@ -193,28 +244,37 @@ This operation can be used to retrieve key details of an individual application 
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-String keyType = "keyType_example"; // String | **Application Key Type** standing for the type of the keys (i.e. Production or Sandbox). 
-String groupId = "groupId_example"; // String | Application Group Id 
-try {
-    ApplicationKeyDTO result = apiInstance.applicationsApplicationIdKeysKeyTypeGet(applicationId, keyType, groupId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysKeyTypeGet");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    String keyType = "keyType_example"; // String | **Application Key Type** standing for the type of the keys (i.e. Production or Sandbox). 
+    String groupId = "groupId_example"; // String | Application Group Id 
+    try {
+      ApplicationKeyDTO result = apiInstance.applicationsApplicationIdKeysKeyTypeGet(applicationId, keyType, groupId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysKeyTypeGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -236,8 +296,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Keys of given type are returned.  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
 
 <a name="applicationsApplicationIdKeysKeyTypePut"></a>
 # **applicationsApplicationIdKeysKeyTypePut**
@@ -250,28 +318,37 @@ This operation can be used to update grant types and callback url of an applicat
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-String keyType = "keyType_example"; // String | **Application Key Type** standing for the type of the keys (i.e. Production or Sandbox). 
-ApplicationKeyDTO body = new ApplicationKeyDTO(); // ApplicationKeyDTO | Grant types/Callback URL update request object 
-try {
-    ApplicationKeyDTO result = apiInstance.applicationsApplicationIdKeysKeyTypePut(applicationId, keyType, body);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysKeyTypePut");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    String keyType = "keyType_example"; // String | **Application Key Type** standing for the type of the keys (i.e. Production or Sandbox). 
+    ApplicationKeyDTO body = new ApplicationKeyDTO(); // ApplicationKeyDTO | Grant types/Callback URL update request object 
+    try {
+      ApplicationKeyDTO result = apiInstance.applicationsApplicationIdKeysKeyTypePut(applicationId, keyType, body);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysKeyTypePut");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -296,6 +373,14 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: application/json
 
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Ok. Grant types or/and callback url is/are updated.  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource to be updated does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
+
 <a name="applicationsApplicationIdKeysKeyTypeRegenerateSecretPost"></a>
 # **applicationsApplicationIdKeysKeyTypeRegenerateSecretPost**
 > ApplicationKeyReGenerateResponseDTO applicationsApplicationIdKeysKeyTypeRegenerateSecretPost(applicationId, keyType)
@@ -307,27 +392,36 @@ This operation can be used to re generate consumer secret for an application for
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-String keyType = "keyType_example"; // String | **Application Key Type** standing for the type of the keys (i.e. Production or Sandbox). 
-try {
-    ApplicationKeyReGenerateResponseDTO result = apiInstance.applicationsApplicationIdKeysKeyTypeRegenerateSecretPost(applicationId, keyType);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysKeyTypeRegenerateSecretPost");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    String keyType = "keyType_example"; // String | **Application Key Type** standing for the type of the keys (i.e. Production or Sandbox). 
+    try {
+      ApplicationKeyReGenerateResponseDTO result = apiInstance.applicationsApplicationIdKeysKeyTypeRegenerateSecretPost(applicationId, keyType);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdKeysKeyTypeRegenerateSecretPost");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -348,8 +442,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Keys are re generated.  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests (Will be supported in future).  <br>  * Last-Modified - Date and time the resource has been modifed the last time. Used by caches, or in conditional requests (Will be supported in future).‚  <br>  * Content-Type - The content type of the body.  <br>  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource to be updated does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met (Will be supported in future).  |  -  |
 
 <a name="applicationsApplicationIdMapKeysPost"></a>
 # **applicationsApplicationIdMapKeysPost**
@@ -362,27 +464,36 @@ Map keys (Consumer key/secret) to an application
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-ApplicationKeyMappingRequestDTO body = new ApplicationKeyMappingRequestDTO(); // ApplicationKeyMappingRequestDTO | Application key mapping request object 
-try {
-    ApplicationKeyDTO result = apiInstance.applicationsApplicationIdMapKeysPost(applicationId, body);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdMapKeysPost");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    ApplicationKeyMappingRequestDTO body = new ApplicationKeyMappingRequestDTO(); // ApplicationKeyMappingRequestDTO | Application key mapping request object 
+    try {
+      ApplicationKeyDTO result = apiInstance.applicationsApplicationIdMapKeysPost(applicationId, body);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdMapKeysPost");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -406,6 +517,14 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: application/json
 
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Keys are mapped.  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource to be updated does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
+
 <a name="applicationsApplicationIdOauthKeysGet"></a>
 # **applicationsApplicationIdOauthKeysGet**
 > ApplicationKeyListDTO applicationsApplicationIdOauthKeysGet(applicationId)
@@ -417,26 +536,35 @@ Retrieve keys (Consumer key/secret) of application
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-try {
-    ApplicationKeyListDTO result = apiInstance.applicationsApplicationIdOauthKeysGet(applicationId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysGet");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    try {
+      ApplicationKeyListDTO result = apiInstance.applicationsApplicationIdOauthKeysGet(applicationId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -456,8 +584,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Keys are returned.  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
 
 <a name="applicationsApplicationIdOauthKeysKeyMappingIdCleanUpPost"></a>
 # **applicationsApplicationIdOauthKeysKeyMappingIdCleanUpPost**
@@ -470,27 +606,36 @@ Clean up keys after failed key generation of an application
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-String keyMappingId = "keyMappingId_example"; // String | OAuth Key Identifier consisting of the UUID of the Oauth Key Mapping. 
-String ifMatch = "ifMatch_example"; // String | Validator for conditional requests; based on ETag. 
-try {
-    apiInstance.applicationsApplicationIdOauthKeysKeyMappingIdCleanUpPost(applicationId, keyMappingId, ifMatch);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysKeyMappingIdCleanUpPost");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    String keyMappingId = "keyMappingId_example"; // String | OAuth Key Identifier consisting of the UUID of the Oauth Key Mapping. 
+    String ifMatch = "ifMatch_example"; // String | Validator for conditional requests; based on ETag. 
+    try {
+      apiInstance.applicationsApplicationIdOauthKeysKeyMappingIdCleanUpPost(applicationId, keyMappingId, ifMatch);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysKeyMappingIdCleanUpPost");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -512,8 +657,16 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Clean up is performed  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource to be updated does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
 
 <a name="applicationsApplicationIdOauthKeysKeyMappingIdGet"></a>
 # **applicationsApplicationIdOauthKeysKeyMappingIdGet**
@@ -526,28 +679,37 @@ This operation can be used to retrieve key details of an individual application 
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-String keyMappingId = "keyMappingId_example"; // String | OAuth Key Identifier consisting of the UUID of the Oauth Key Mapping. 
-String groupId = "groupId_example"; // String | Application Group Id 
-try {
-    ApplicationKeyDTO result = apiInstance.applicationsApplicationIdOauthKeysKeyMappingIdGet(applicationId, keyMappingId, groupId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysKeyMappingIdGet");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    String keyMappingId = "keyMappingId_example"; // String | OAuth Key Identifier consisting of the UUID of the Oauth Key Mapping. 
+    String groupId = "groupId_example"; // String | Application Group Id 
+    try {
+      ApplicationKeyDTO result = apiInstance.applicationsApplicationIdOauthKeysKeyMappingIdGet(applicationId, keyMappingId, groupId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysKeyMappingIdGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -569,8 +731,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Keys of given type are returned.  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
 
 <a name="applicationsApplicationIdOauthKeysKeyMappingIdPut"></a>
 # **applicationsApplicationIdOauthKeysKeyMappingIdPut**
@@ -583,28 +753,37 @@ This operation can be used to update grant types and callback url of an applicat
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-String keyMappingId = "keyMappingId_example"; // String | OAuth Key Identifier consisting of the UUID of the Oauth Key Mapping. 
-ApplicationKeyDTO body = new ApplicationKeyDTO(); // ApplicationKeyDTO | Grant types/Callback URL update request object 
-try {
-    ApplicationKeyDTO result = apiInstance.applicationsApplicationIdOauthKeysKeyMappingIdPut(applicationId, keyMappingId, body);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysKeyMappingIdPut");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    String keyMappingId = "keyMappingId_example"; // String | OAuth Key Identifier consisting of the UUID of the Oauth Key Mapping. 
+    ApplicationKeyDTO body = new ApplicationKeyDTO(); // ApplicationKeyDTO | Grant types/Callback URL update request object 
+    try {
+      ApplicationKeyDTO result = apiInstance.applicationsApplicationIdOauthKeysKeyMappingIdPut(applicationId, keyMappingId, body);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysKeyMappingIdPut");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -629,6 +808,14 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: application/json
 
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Ok. Grant types or/and callback url is/are updated.  |  -  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource to be updated does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met.  |  -  |
+
 <a name="applicationsApplicationIdOauthKeysKeyMappingIdRegenerateSecretPost"></a>
 # **applicationsApplicationIdOauthKeysKeyMappingIdRegenerateSecretPost**
 > ApplicationKeyReGenerateResponseDTO applicationsApplicationIdOauthKeysKeyMappingIdRegenerateSecretPost(applicationId, keyMappingId)
@@ -640,27 +827,36 @@ This operation can be used to re generate consumer secret for an application for
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApplicationKeysApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApplicationKeysApi apiInstance = new ApplicationKeysApi();
-String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
-String keyMappingId = "keyMappingId_example"; // String | OAuth Key Identifier consisting of the UUID of the Oauth Key Mapping. 
-try {
-    ApplicationKeyReGenerateResponseDTO result = apiInstance.applicationsApplicationIdOauthKeysKeyMappingIdRegenerateSecretPost(applicationId, keyMappingId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysKeyMappingIdRegenerateSecretPost");
-    e.printStackTrace();
+    ApplicationKeysApi apiInstance = new ApplicationKeysApi(defaultClient);
+    String applicationId = "applicationId_example"; // String | Application Identifier consisting of the UUID of the Application. 
+    String keyMappingId = "keyMappingId_example"; // String | OAuth Key Identifier consisting of the UUID of the Oauth Key Mapping. 
+    try {
+      ApplicationKeyReGenerateResponseDTO result = apiInstance.applicationsApplicationIdOauthKeysKeyMappingIdRegenerateSecretPost(applicationId, keyMappingId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApplicationKeysApi#applicationsApplicationIdOauthKeysKeyMappingIdRegenerateSecretPost");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -681,6 +877,14 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Keys are re generated.  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests (Will be supported in future).  <br>  * Last-Modified - Date and time the resource has been modifed the last time. Used by caches, or in conditional requests (Will be supported in future).‚  <br>  * Content-Type - The content type of the body.  <br>  |
+**400** | Bad Request. Invalid request or validation error  |  -  |
+**404** | Not Found. The resource to be updated does not exist.  |  -  |
+**412** | Precondition Failed. The request has not been performed because one of the preconditions is not met (Will be supported in future).  |  -  |
 

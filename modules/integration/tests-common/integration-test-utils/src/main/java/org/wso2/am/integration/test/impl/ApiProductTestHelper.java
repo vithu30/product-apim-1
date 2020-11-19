@@ -130,10 +130,10 @@ public class ApiProductTestHelper {
         Assert.assertEquals(returnedProduct.getContext(), responseData.getContext());
         Assert.assertEquals(returnedProduct.getDescription(), responseData.getDescription());
         Assert.assertEquals(returnedProduct.getProvider(), responseData.getProvider());
-        Assert.assertEquals(returnedProduct.isHasThumbnail(), responseData.isHasThumbnail());
+        Assert.assertEquals(returnedProduct.getHasThumbnail(), responseData.getHasThumbnail());
         Assert.assertEquals(returnedProduct.getState(), responseData.getState());
-        Assert.assertEquals(returnedProduct.isEnableSchemaValidation(), responseData.isEnableSchemaValidation());
-        Assert.assertEquals(returnedProduct.isResponseCachingEnabled(), responseData.isResponseCachingEnabled());
+        Assert.assertEquals(returnedProduct.getEnableSchemaValidation(), responseData.getEnableSchemaValidation());
+        Assert.assertEquals(returnedProduct.getResponseCachingEnabled(), responseData.getResponseCachingEnabled());
         Assert.assertEquals(returnedProduct.getCacheTimeout(), responseData.getCacheTimeout());
         Assert.assertEquals(returnedProduct.getVisibility(), responseData.getVisibility());
         Assert.assertEquals(returnedProduct.getVisibleRoles(), responseData.getVisibleRoles());
@@ -288,7 +288,7 @@ public class ApiProductTestHelper {
         Assert.assertEquals(apiProductInfoDTO.getProvider(), apiProductDTO.getProvider());
         Assert.assertEquals(apiProductInfoDTO.getContext(), apiProductDTO.getContext());
         Assert.assertEquals(apiProductInfoDTO.getDescription(), apiProductDTO.getDescription());
-        Assert.assertEquals(apiProductInfoDTO.isHasThumbnail(), apiProductDTO.isHasThumbnail());
+        Assert.assertEquals(apiProductInfoDTO.getHasThumbnail(), apiProductDTO.getHasThumbnail());
         Assert.assertEquals(new HashSet<>(apiProductInfoDTO.getSecurityScheme()),
                 new HashSet<>(apiProductDTO.getSecurityScheme()), "Security Scheme does not match");
         Assert.assertEquals(apiProductInfoDTO.getState().getValue(), apiProductDTO.getState().getValue());

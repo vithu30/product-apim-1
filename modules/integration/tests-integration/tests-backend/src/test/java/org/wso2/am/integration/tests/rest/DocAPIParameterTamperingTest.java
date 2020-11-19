@@ -31,6 +31,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import org.wso2.am.integration.clients.publisher.api.ApiException;
 import org.wso2.am.integration.test.utils.base.APIMIntegrationBaseTest;
+import org.wso2.am.integration.tests.api.lifecycle.APIManagerConfigurationChangeTest;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 
 /**
@@ -78,5 +79,28 @@ public class DocAPIParameterTamperingTest extends APIMIntegrationBaseTest {
         }
         Assert.assertTrue("Expected ApiException to be thrown with a response code 404. But it was not thrown " +
                 "as that.", expectedExceptionOccured);
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.setProperty("javax.net.ssl.keyStore",
+                "/home/vithursa/Documents/APIManagementProject/new-product-apim/product-apim/modules/distribution/product/target/wso2am-3.2.0-SNAPSHOT/repository/resources/security/wso2carbon.jks");
+        System.setProperty("javax.net.ssl.trustStore",
+                "/home/vithursa/Documents/APIManagementProject/new-product-apim/product-apim/modules/distribution/product/target/wso2am-3.2.0-SNAPSHOT/repository/resources/security/client-truststore.jks");
+        System.setProperty("javax.net.ssl.keyStorePassword", "wso2carbon");
+
+        System.setProperty("framework.resource.location", "/home/vithursa/Documents/APIManagementProject/new-product-apim/product-apim/modules/integration/tests-integration/tests-backend/src/test/resources/");
+        System.setProperty("user.dir",
+                "/home/vithursa/Documents/APIManagementProject/new-product-apim/product-apim/modules/integration/tests-integration/tests-backend/src");
+        APIManagerConfigurationChangeTest con = new APIManagerConfigurationChangeTest();
+        con.configureEnvironment();
+        DocAPIParameterTamperingTest aCase = new DocAPIParameterTamperingTest(TestUserMode.SUPER_TENANT_ADMIN);
+        aCase.init();
+        aCase.setEnvironment();
+
+        try {
+            aCase.testParameterTampaeredResponseOfDocAPI();
+        } finally {
+//            aCase.destroy();
+        }
     }
 }

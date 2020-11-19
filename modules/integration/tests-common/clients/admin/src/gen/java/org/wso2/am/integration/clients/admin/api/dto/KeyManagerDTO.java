@@ -1,12 +1,12 @@
 /*
  * WSO2 API Manager - Admin
- * This document specifies a **RESTful API** for WSO2 **API Manager** - Admin Portal. Please see [full swagger definition](https://raw.githubusercontent.com/wso2/carbon-apimgt/v6.5.176/components/apimgt/org.wso2.carbon.apimgt.rest.api.admin/src/main/resources/admin-api.yaml) of the API which is written using [swagger 2.0](http://swagger.io/) specification. 
+ * This document specifies a **RESTful API** for WSO2 **API Manager** - **Admin Portal**. Please see [full OpenAPI Specification](https://raw.githubusercontent.com/wso2/carbon-apimgt/v6.7.206/components/apimgt/org.wso2.carbon.apimgt.rest.api.admin.v1/src/main/resources/admin-api.yaml) of the API which is written using [OAS 3.0](http://swagger.io/) specification.  # Authentication Our REST APIs are protected using OAuth2 and access control is achieved through scopes. Before you start invoking the the API you need to obtain an access token with the required scopes. This guide will walk you through the steps that you will need to follow to obtain an access token. First you need to obtain the consumer key/secret key pair by calling the dynamic client registration (DCR) endpoint. You can add your preferred grant types in the payload. A sample payload is shown below. ```   {   \"callbackUrl\":\"www.google.lk\",   \"clientName\":\"rest_api_admin\",   \"owner\":\"admin\",   \"grantType\":\"client_credentials password refresh_token\",   \"saasApp\":true   } ``` Create a file (payload.json) with the above sample payload, and use the cURL shown bellow to invoke the DCR endpoint. Authorization header of this should contain the base64 encoded admin username and password. **Format of the request** ```   curl -X POST -H \"Authorization: Basic Base64(admin_username:admin_password)\" -H \"Content-Type: application/json\"   \\ -d @payload.json https://<host>:<servlet_port>/client-registration/v0.17/register ``` **Sample request** ```   curl -X POST -H \"Authorization: Basic YWRtaW46YWRtaW4=\" -H \"Content-Type: application/json\"   \\ -d @payload.json https://localhost:9443/client-registration/v0.17/register ``` Following is a sample response after invoking the above curl. ``` { \"clientId\": \"fOCi4vNJ59PpHucC2CAYfYuADdMa\", \"clientName\": \"rest_api_admin\", \"callBackURL\": \"www.google.lk\", \"clientSecret\": \"a4FwHlq0iCIKVs2MPIIDnepZnYMa\", \"isSaasApplication\": true, \"appOwner\": \"admin\", \"jsonString\": \"{\\\"grant_types\\\":\\\"client_credentials password refresh_token\\\",\\\"redirect_uris\\\":\\\"www.google.lk\\\",\\\"client_name\\\":\\\"rest_api_admin\\\"}\", \"jsonAppAttribute\": \"{}\", \"tokenType\": null } ``` Next you must use the above client id and secret to obtain the access token. We will be using the password grant type for this, you can use any grant type you desire. You also need to add the proper **scope** when getting the access token. All possible scopes for Admin REST API can be viewed in **OAuth2 Security** section of this document and scope for each resource is given in **authorizations** section of resource documentation. Following is the format of the request if you are using the password grant type. ``` curl -k -d \"grant_type=password&username=<admin_username>&password=<admin_passowrd>&scope=<scopes seperated by space>\" \\ -H \"Authorization: Basic base64(cliet_id:client_secret)\" \\ https://<host>:<gateway_port>/token ``` **Sample request** ``` curl https://localhost:8243/token -k \\ -H \"Authorization: Basic Zk9DaTR2Tko1OVBwSHVjQzJDQVlmWXVBRGRNYTphNEZ3SGxxMGlDSUtWczJNUElJRG5lcFpuWU1h\" \\ -d \"grant_type=password&username=admin&password=admin&scope=apim:admin apim:tier_view\" ``` Shown below is a sample response to the above request. ``` { \"access_token\": \"e79bda48-3406-3178-acce-f6e4dbdcbb12\", \"refresh_token\": \"a757795d-e69f-38b8-bd85-9aded677a97c\", \"scope\": \"apim:admin apim:tier_view\", \"token_type\": \"Bearer\", \"expires_in\": 3600 } ``` Now you have a valid access token, which you can use to invoke an API. Navigate through the API descriptions to find the required API, obtain an access token as described above and invoke the API with the authentication header. If you use a different authentication mechanism, this process may change.  # Try out in Postman If you want to try-out the embedded postman collection with \"Run in Postman\" option, please follow the guidelines listed below. * All of the OAuth2 secured endpoints have been configured with an Authorization Bearer header with a parameterized access token. Before invoking any REST API resource make sure you run the `Register DCR Application` and `Generate Access Token` requests to fetch an access token with all required scopes. * Make sure you have an API Manager instance up and running. * Update the `basepath` parameter to match the hostname and port of the APIM instance.  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f5ac2ca9fb22afef6ed6) 
  *
- * OpenAPI spec version: v1.2
+ * The version of the OpenAPI document: v1.2
  * Contact: architecture@wso2.com
  *
- * NOTE: This class is auto generated by the swagger code generator program.
- * https://github.com/swagger-api/swagger-codegen.git
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
  * Do not edit the class manually.
  */
 
@@ -34,106 +34,135 @@ import org.wso2.am.integration.clients.admin.api.dto.TokenValidationDTO;
  */
 
 public class KeyManagerDTO {
-  @SerializedName("id")
-  private String id = null;
+  public static final String SERIALIZED_NAME_ID = "id";
+  @SerializedName(SERIALIZED_NAME_ID)
+  private String id;
 
-  @SerializedName("name")
-  private String name = null;
+  public static final String SERIALIZED_NAME_NAME = "name";
+  @SerializedName(SERIALIZED_NAME_NAME)
+  private String name;
 
-  @SerializedName("displayName")
-  private String displayName = null;
+  public static final String SERIALIZED_NAME_DISPLAY_NAME = "displayName";
+  @SerializedName(SERIALIZED_NAME_DISPLAY_NAME)
+  private String displayName;
 
-  @SerializedName("type")
-  private String type = null;
+  public static final String SERIALIZED_NAME_TYPE = "type";
+  @SerializedName(SERIALIZED_NAME_TYPE)
+  private String type;
 
-  @SerializedName("description")
-  private String description = null;
+  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
+  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
+  private String description;
 
-  @SerializedName("introspectionEndpoint")
-  private String introspectionEndpoint = null;
+  public static final String SERIALIZED_NAME_WELL_KNOWN_ENDPOINT = "wellKnownEndpoint";
+  @SerializedName(SERIALIZED_NAME_WELL_KNOWN_ENDPOINT)
+  private String wellKnownEndpoint;
 
-  @SerializedName("clientRegistrationEndpoint")
-  private String clientRegistrationEndpoint = null;
+  public static final String SERIALIZED_NAME_INTROSPECTION_ENDPOINT = "introspectionEndpoint";
+  @SerializedName(SERIALIZED_NAME_INTROSPECTION_ENDPOINT)
+  private String introspectionEndpoint;
 
-  @SerializedName("tokenEndpoint")
-  private String tokenEndpoint = null;
+  public static final String SERIALIZED_NAME_CLIENT_REGISTRATION_ENDPOINT = "clientRegistrationEndpoint";
+  @SerializedName(SERIALIZED_NAME_CLIENT_REGISTRATION_ENDPOINT)
+  private String clientRegistrationEndpoint;
 
-  @SerializedName("revokeEndpoint")
-  private String revokeEndpoint = null;
+  public static final String SERIALIZED_NAME_TOKEN_ENDPOINT = "tokenEndpoint";
+  @SerializedName(SERIALIZED_NAME_TOKEN_ENDPOINT)
+  private String tokenEndpoint;
 
-  @SerializedName("userInfoEndpoint")
-  private String userInfoEndpoint = null;
+  public static final String SERIALIZED_NAME_REVOKE_ENDPOINT = "revokeEndpoint";
+  @SerializedName(SERIALIZED_NAME_REVOKE_ENDPOINT)
+  private String revokeEndpoint;
 
-  @SerializedName("authorizeEndpoint")
-  private String authorizeEndpoint = null;
+  public static final String SERIALIZED_NAME_USER_INFO_ENDPOINT = "userInfoEndpoint";
+  @SerializedName(SERIALIZED_NAME_USER_INFO_ENDPOINT)
+  private String userInfoEndpoint;
 
-  @SerializedName("certificates")
-  private KeyManagerCertificatesDTO certificates = null;
+  public static final String SERIALIZED_NAME_AUTHORIZE_ENDPOINT = "authorizeEndpoint";
+  @SerializedName(SERIALIZED_NAME_AUTHORIZE_ENDPOINT)
+  private String authorizeEndpoint;
 
-  @SerializedName("issuer")
-  private String issuer = null;
+  public static final String SERIALIZED_NAME_CERTIFICATES = "certificates";
+  @SerializedName(SERIALIZED_NAME_CERTIFICATES)
+  private KeyManagerCertificatesDTO certificates;
 
-  @SerializedName("scopeManagementEndpoint")
-  private String scopeManagementEndpoint = null;
+  public static final String SERIALIZED_NAME_ISSUER = "issuer";
+  @SerializedName(SERIALIZED_NAME_ISSUER)
+  private String issuer;
 
-  @SerializedName("availableGrantTypes")
+  public static final String SERIALIZED_NAME_SCOPE_MANAGEMENT_ENDPOINT = "scopeManagementEndpoint";
+  @SerializedName(SERIALIZED_NAME_SCOPE_MANAGEMENT_ENDPOINT)
+  private String scopeManagementEndpoint;
+
+  public static final String SERIALIZED_NAME_AVAILABLE_GRANT_TYPES = "availableGrantTypes";
+  @SerializedName(SERIALIZED_NAME_AVAILABLE_GRANT_TYPES)
   private List<String> availableGrantTypes = null;
 
-  @SerializedName("enableTokenGeneration")
-  private Boolean enableTokenGeneration = null;
+  public static final String SERIALIZED_NAME_ENABLE_TOKEN_GENERATION = "enableTokenGeneration";
+  @SerializedName(SERIALIZED_NAME_ENABLE_TOKEN_GENERATION)
+  private Boolean enableTokenGeneration;
 
-  @SerializedName("enableTokenEncryption")
+  public static final String SERIALIZED_NAME_ENABLE_TOKEN_ENCRYPTION = "enableTokenEncryption";
+  @SerializedName(SERIALIZED_NAME_ENABLE_TOKEN_ENCRYPTION)
   private Boolean enableTokenEncryption = false;
 
-  @SerializedName("enableTokenHashing")
+  public static final String SERIALIZED_NAME_ENABLE_TOKEN_HASHING = "enableTokenHashing";
+  @SerializedName(SERIALIZED_NAME_ENABLE_TOKEN_HASHING)
   private Boolean enableTokenHashing = false;
 
-  @SerializedName("enableMapOAuthConsumerApps")
+  public static final String SERIALIZED_NAME_ENABLE_MAP_O_AUTH_CONSUMER_APPS = "enableMapOAuthConsumerApps";
+  @SerializedName(SERIALIZED_NAME_ENABLE_MAP_O_AUTH_CONSUMER_APPS)
   private Boolean enableMapOAuthConsumerApps = false;
 
-  @SerializedName("enableOAuthAppCreation")
+  public static final String SERIALIZED_NAME_ENABLE_O_AUTH_APP_CREATION = "enableOAuthAppCreation";
+  @SerializedName(SERIALIZED_NAME_ENABLE_O_AUTH_APP_CREATION)
   private Boolean enableOAuthAppCreation = false;
 
-  @SerializedName("enableSelfValidationJWT")
+  public static final String SERIALIZED_NAME_ENABLE_SELF_VALIDATION_J_W_T = "enableSelfValidationJWT";
+  @SerializedName(SERIALIZED_NAME_ENABLE_SELF_VALIDATION_J_W_T)
   private Boolean enableSelfValidationJWT = true;
 
-  @SerializedName("claimMapping")
+  public static final String SERIALIZED_NAME_CLAIM_MAPPING = "claimMapping";
+  @SerializedName(SERIALIZED_NAME_CLAIM_MAPPING)
   private List<ClaimMappingEntryDTO> claimMapping = null;
 
-  @SerializedName("consumerKeyClaim")
-  private String consumerKeyClaim = null;
+  public static final String SERIALIZED_NAME_CONSUMER_KEY_CLAIM = "consumerKeyClaim";
+  @SerializedName(SERIALIZED_NAME_CONSUMER_KEY_CLAIM)
+  private String consumerKeyClaim;
 
-  @SerializedName("scopesClaim")
-  private String scopesClaim = null;
+  public static final String SERIALIZED_NAME_SCOPES_CLAIM = "scopesClaim";
+  @SerializedName(SERIALIZED_NAME_SCOPES_CLAIM)
+  private String scopesClaim;
 
-  @SerializedName("tokenValidation")
+  public static final String SERIALIZED_NAME_TOKEN_VALIDATION = "tokenValidation";
+  @SerializedName(SERIALIZED_NAME_TOKEN_VALIDATION)
   private List<TokenValidationDTO> tokenValidation = null;
 
-  @SerializedName("enabled")
-  private Boolean enabled = null;
+  public static final String SERIALIZED_NAME_ENABLED = "enabled";
+  @SerializedName(SERIALIZED_NAME_ENABLED)
+  private Boolean enabled;
 
-  @SerializedName("additionalProperties")
-  private Object additionalProperties = null;
+  public static final String SERIALIZED_NAME_ADDITIONAL_PROPERTIES = "additionalProperties";
+  @SerializedName(SERIALIZED_NAME_ADDITIONAL_PROPERTIES)
+  private Object additionalProperties;
 
-  public KeyManagerDTO id(String id) {
-    this.id = id;
-    return this;
-  }
 
    /**
    * Get id
    * @return id
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "01234567-0123-0123-0123-012345678901", value = "")
+
   public String getId() {
     return id;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+
+
 
   public KeyManagerDTO name(String name) {
+    
     this.name = name;
     return this;
   }
@@ -142,16 +171,20 @@ public class KeyManagerDTO {
    * Get name
    * @return name
   **/
-  @ApiModelProperty(example = "WSO2 IS", required = true, value = "")
+  @ApiModelProperty(example = "WSO2 Identity Server", required = true, value = "")
+
   public String getName() {
     return name;
   }
+
 
   public void setName(String name) {
     this.name = name;
   }
 
+
   public KeyManagerDTO displayName(String displayName) {
+    
     this.displayName = displayName;
     return this;
   }
@@ -160,16 +193,21 @@ public class KeyManagerDTO {
    * display name of Key Manager to  show in UI 
    * @return displayName
   **/
-  @ApiModelProperty(example = "KeyManager1", value = "display name of Key Manager to  show in UI ")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "WSO2 Identity Server", value = "display name of Key Manager to  show in UI ")
+
   public String getDisplayName() {
     return displayName;
   }
+
 
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
   }
 
+
   public KeyManagerDTO type(String type) {
+    
     this.type = type;
     return this;
   }
@@ -178,16 +216,20 @@ public class KeyManagerDTO {
    * Get type
    * @return type
   **/
-  @ApiModelProperty(example = "IS", required = true, value = "")
+  @ApiModelProperty(example = "WSO2-IS", required = true, value = "")
+
   public String getType() {
     return type;
   }
+
 
   public void setType(String type) {
     this.type = type;
   }
 
+
   public KeyManagerDTO description(String description) {
+    
     this.description = description;
     return this;
   }
@@ -196,16 +238,44 @@ public class KeyManagerDTO {
    * Get description
    * @return description
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "This is a key manager for Developers", value = "")
+
   public String getDescription() {
     return description;
   }
+
 
   public void setDescription(String description) {
     this.description = description;
   }
 
+
+  public KeyManagerDTO wellKnownEndpoint(String wellKnownEndpoint) {
+    
+    this.wellKnownEndpoint = wellKnownEndpoint;
+    return this;
+  }
+
+   /**
+   * Well-Known Endpoint of Identity Provider. 
+   * @return wellKnownEndpoint
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "Well-Known Endpoint of Identity Provider. ")
+
+  public String getWellKnownEndpoint() {
+    return wellKnownEndpoint;
+  }
+
+
+  public void setWellKnownEndpoint(String wellKnownEndpoint) {
+    this.wellKnownEndpoint = wellKnownEndpoint;
+  }
+
+
   public KeyManagerDTO introspectionEndpoint(String introspectionEndpoint) {
+    
     this.introspectionEndpoint = introspectionEndpoint;
     return this;
   }
@@ -214,16 +284,21 @@ public class KeyManagerDTO {
    * Get introspectionEndpoint
    * @return introspectionEndpoint
   **/
-  @ApiModelProperty(example = "", value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "https://localhost:9444/oauth2/introspect", value = "")
+
   public String getIntrospectionEndpoint() {
     return introspectionEndpoint;
   }
+
 
   public void setIntrospectionEndpoint(String introspectionEndpoint) {
     this.introspectionEndpoint = introspectionEndpoint;
   }
 
+
   public KeyManagerDTO clientRegistrationEndpoint(String clientRegistrationEndpoint) {
+    
     this.clientRegistrationEndpoint = clientRegistrationEndpoint;
     return this;
   }
@@ -232,16 +307,21 @@ public class KeyManagerDTO {
    * Get clientRegistrationEndpoint
    * @return clientRegistrationEndpoint
   **/
-  @ApiModelProperty(example = "", value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "https://localhost:9444/keymanager-operations/dcr/register", value = "")
+
   public String getClientRegistrationEndpoint() {
     return clientRegistrationEndpoint;
   }
+
 
   public void setClientRegistrationEndpoint(String clientRegistrationEndpoint) {
     this.clientRegistrationEndpoint = clientRegistrationEndpoint;
   }
 
+
   public KeyManagerDTO tokenEndpoint(String tokenEndpoint) {
+    
     this.tokenEndpoint = tokenEndpoint;
     return this;
   }
@@ -250,16 +330,21 @@ public class KeyManagerDTO {
    * Get tokenEndpoint
    * @return tokenEndpoint
   **/
-  @ApiModelProperty(example = "", value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "https://localhost:9444/oauth2/token", value = "")
+
   public String getTokenEndpoint() {
     return tokenEndpoint;
   }
+
 
   public void setTokenEndpoint(String tokenEndpoint) {
     this.tokenEndpoint = tokenEndpoint;
   }
 
+
   public KeyManagerDTO revokeEndpoint(String revokeEndpoint) {
+    
     this.revokeEndpoint = revokeEndpoint;
     return this;
   }
@@ -268,16 +353,21 @@ public class KeyManagerDTO {
    * Get revokeEndpoint
    * @return revokeEndpoint
   **/
-  @ApiModelProperty(example = "", value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "https://localhost:9444/oauth2/revoke", value = "")
+
   public String getRevokeEndpoint() {
     return revokeEndpoint;
   }
+
 
   public void setRevokeEndpoint(String revokeEndpoint) {
     this.revokeEndpoint = revokeEndpoint;
   }
 
+
   public KeyManagerDTO userInfoEndpoint(String userInfoEndpoint) {
+    
     this.userInfoEndpoint = userInfoEndpoint;
     return this;
   }
@@ -286,16 +376,21 @@ public class KeyManagerDTO {
    * Get userInfoEndpoint
    * @return userInfoEndpoint
   **/
-  @ApiModelProperty(example = "", value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "https://localhost:9444/oauth2/userinfo?schema=openid", value = "")
+
   public String getUserInfoEndpoint() {
     return userInfoEndpoint;
   }
+
 
   public void setUserInfoEndpoint(String userInfoEndpoint) {
     this.userInfoEndpoint = userInfoEndpoint;
   }
 
+
   public KeyManagerDTO authorizeEndpoint(String authorizeEndpoint) {
+    
     this.authorizeEndpoint = authorizeEndpoint;
     return this;
   }
@@ -304,16 +399,21 @@ public class KeyManagerDTO {
    * Get authorizeEndpoint
    * @return authorizeEndpoint
   **/
-  @ApiModelProperty(example = "", value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "https://localhost:9444/oauth2/authorize", value = "")
+
   public String getAuthorizeEndpoint() {
     return authorizeEndpoint;
   }
+
 
   public void setAuthorizeEndpoint(String authorizeEndpoint) {
     this.authorizeEndpoint = authorizeEndpoint;
   }
 
+
   public KeyManagerDTO certificates(KeyManagerCertificatesDTO certificates) {
+    
     this.certificates = certificates;
     return this;
   }
@@ -322,16 +422,21 @@ public class KeyManagerDTO {
    * Get certificates
    * @return certificates
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(value = "")
+
   public KeyManagerCertificatesDTO getCertificates() {
     return certificates;
   }
+
 
   public void setCertificates(KeyManagerCertificatesDTO certificates) {
     this.certificates = certificates;
   }
 
+
   public KeyManagerDTO issuer(String issuer) {
+    
     this.issuer = issuer;
     return this;
   }
@@ -340,16 +445,21 @@ public class KeyManagerDTO {
    * Get issuer
    * @return issuer
   **/
-  @ApiModelProperty(example = "", value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "https://localhost:9444/services", value = "")
+
   public String getIssuer() {
     return issuer;
   }
+
 
   public void setIssuer(String issuer) {
     this.issuer = issuer;
   }
 
+
   public KeyManagerDTO scopeManagementEndpoint(String scopeManagementEndpoint) {
+    
     this.scopeManagementEndpoint = scopeManagementEndpoint;
     return this;
   }
@@ -358,16 +468,21 @@ public class KeyManagerDTO {
    * Get scopeManagementEndpoint
    * @return scopeManagementEndpoint
   **/
-  @ApiModelProperty(example = "", value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "https://wso2is.com:9444/api/identity/oauth2/v1.0/scopes", value = "")
+
   public String getScopeManagementEndpoint() {
     return scopeManagementEndpoint;
   }
+
 
   public void setScopeManagementEndpoint(String scopeManagementEndpoint) {
     this.scopeManagementEndpoint = scopeManagementEndpoint;
   }
 
+
   public KeyManagerDTO availableGrantTypes(List<String> availableGrantTypes) {
+    
     this.availableGrantTypes = availableGrantTypes;
     return this;
   }
@@ -384,16 +499,21 @@ public class KeyManagerDTO {
    * Get availableGrantTypes
    * @return availableGrantTypes
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(value = "")
+
   public List<String> getAvailableGrantTypes() {
     return availableGrantTypes;
   }
+
 
   public void setAvailableGrantTypes(List<String> availableGrantTypes) {
     this.availableGrantTypes = availableGrantTypes;
   }
 
+
   public KeyManagerDTO enableTokenGeneration(Boolean enableTokenGeneration) {
+    
     this.enableTokenGeneration = enableTokenGeneration;
     return this;
   }
@@ -402,16 +522,21 @@ public class KeyManagerDTO {
    * Get enableTokenGeneration
    * @return enableTokenGeneration
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "true", value = "")
-  public Boolean isEnableTokenGeneration() {
+
+  public Boolean getEnableTokenGeneration() {
     return enableTokenGeneration;
   }
+
 
   public void setEnableTokenGeneration(Boolean enableTokenGeneration) {
     this.enableTokenGeneration = enableTokenGeneration;
   }
 
+
   public KeyManagerDTO enableTokenEncryption(Boolean enableTokenEncryption) {
+    
     this.enableTokenEncryption = enableTokenEncryption;
     return this;
   }
@@ -420,16 +545,21 @@ public class KeyManagerDTO {
    * Get enableTokenEncryption
    * @return enableTokenEncryption
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "false", value = "")
-  public Boolean isEnableTokenEncryption() {
+
+  public Boolean getEnableTokenEncryption() {
     return enableTokenEncryption;
   }
+
 
   public void setEnableTokenEncryption(Boolean enableTokenEncryption) {
     this.enableTokenEncryption = enableTokenEncryption;
   }
 
+
   public KeyManagerDTO enableTokenHashing(Boolean enableTokenHashing) {
+    
     this.enableTokenHashing = enableTokenHashing;
     return this;
   }
@@ -438,16 +568,21 @@ public class KeyManagerDTO {
    * Get enableTokenHashing
    * @return enableTokenHashing
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "false", value = "")
-  public Boolean isEnableTokenHashing() {
+
+  public Boolean getEnableTokenHashing() {
     return enableTokenHashing;
   }
+
 
   public void setEnableTokenHashing(Boolean enableTokenHashing) {
     this.enableTokenHashing = enableTokenHashing;
   }
 
+
   public KeyManagerDTO enableMapOAuthConsumerApps(Boolean enableMapOAuthConsumerApps) {
+    
     this.enableMapOAuthConsumerApps = enableMapOAuthConsumerApps;
     return this;
   }
@@ -456,16 +591,21 @@ public class KeyManagerDTO {
    * Get enableMapOAuthConsumerApps
    * @return enableMapOAuthConsumerApps
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "false", value = "")
-  public Boolean isEnableMapOAuthConsumerApps() {
+
+  public Boolean getEnableMapOAuthConsumerApps() {
     return enableMapOAuthConsumerApps;
   }
+
 
   public void setEnableMapOAuthConsumerApps(Boolean enableMapOAuthConsumerApps) {
     this.enableMapOAuthConsumerApps = enableMapOAuthConsumerApps;
   }
 
+
   public KeyManagerDTO enableOAuthAppCreation(Boolean enableOAuthAppCreation) {
+    
     this.enableOAuthAppCreation = enableOAuthAppCreation;
     return this;
   }
@@ -474,16 +614,21 @@ public class KeyManagerDTO {
    * Get enableOAuthAppCreation
    * @return enableOAuthAppCreation
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "false", value = "")
-  public Boolean isEnableOAuthAppCreation() {
+
+  public Boolean getEnableOAuthAppCreation() {
     return enableOAuthAppCreation;
   }
+
 
   public void setEnableOAuthAppCreation(Boolean enableOAuthAppCreation) {
     this.enableOAuthAppCreation = enableOAuthAppCreation;
   }
 
+
   public KeyManagerDTO enableSelfValidationJWT(Boolean enableSelfValidationJWT) {
+    
     this.enableSelfValidationJWT = enableSelfValidationJWT;
     return this;
   }
@@ -492,16 +637,21 @@ public class KeyManagerDTO {
    * Get enableSelfValidationJWT
    * @return enableSelfValidationJWT
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "true", value = "")
-  public Boolean isEnableSelfValidationJWT() {
+
+  public Boolean getEnableSelfValidationJWT() {
     return enableSelfValidationJWT;
   }
+
 
   public void setEnableSelfValidationJWT(Boolean enableSelfValidationJWT) {
     this.enableSelfValidationJWT = enableSelfValidationJWT;
   }
 
+
   public KeyManagerDTO claimMapping(List<ClaimMappingEntryDTO> claimMapping) {
+    
     this.claimMapping = claimMapping;
     return this;
   }
@@ -518,16 +668,21 @@ public class KeyManagerDTO {
    * Get claimMapping
    * @return claimMapping
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(value = "")
+
   public List<ClaimMappingEntryDTO> getClaimMapping() {
     return claimMapping;
   }
+
 
   public void setClaimMapping(List<ClaimMappingEntryDTO> claimMapping) {
     this.claimMapping = claimMapping;
   }
 
+
   public KeyManagerDTO consumerKeyClaim(String consumerKeyClaim) {
+    
     this.consumerKeyClaim = consumerKeyClaim;
     return this;
   }
@@ -536,16 +691,21 @@ public class KeyManagerDTO {
    * Get consumerKeyClaim
    * @return consumerKeyClaim
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "azp", value = "")
+
   public String getConsumerKeyClaim() {
     return consumerKeyClaim;
   }
+
 
   public void setConsumerKeyClaim(String consumerKeyClaim) {
     this.consumerKeyClaim = consumerKeyClaim;
   }
 
+
   public KeyManagerDTO scopesClaim(String scopesClaim) {
+    
     this.scopesClaim = scopesClaim;
     return this;
   }
@@ -554,16 +714,21 @@ public class KeyManagerDTO {
    * Get scopesClaim
    * @return scopesClaim
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "scp", value = "")
+
   public String getScopesClaim() {
     return scopesClaim;
   }
+
 
   public void setScopesClaim(String scopesClaim) {
     this.scopesClaim = scopesClaim;
   }
 
+
   public KeyManagerDTO tokenValidation(List<TokenValidationDTO> tokenValidation) {
+    
     this.tokenValidation = tokenValidation;
     return this;
   }
@@ -580,16 +745,21 @@ public class KeyManagerDTO {
    * Get tokenValidation
    * @return tokenValidation
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(value = "")
+
   public List<TokenValidationDTO> getTokenValidation() {
     return tokenValidation;
   }
+
 
   public void setTokenValidation(List<TokenValidationDTO> tokenValidation) {
     this.tokenValidation = tokenValidation;
   }
 
+
   public KeyManagerDTO enabled(Boolean enabled) {
+    
     this.enabled = enabled;
     return this;
   }
@@ -598,16 +768,21 @@ public class KeyManagerDTO {
    * Get enabled
    * @return enabled
   **/
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "true", value = "")
-  public Boolean isEnabled() {
+
+  public Boolean getEnabled() {
     return enabled;
   }
+
 
   public void setEnabled(Boolean enabled) {
     this.enabled = enabled;
   }
 
+
   public KeyManagerDTO additionalProperties(Object additionalProperties) {
+    
     this.additionalProperties = additionalProperties;
     return this;
   }
@@ -616,10 +791,13 @@ public class KeyManagerDTO {
    * Get additionalProperties
    * @return additionalProperties
   **/
-  @ApiModelProperty(value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "{\"self_validate_jwt\":true,\"Username\":\"admin\",\"Password\":\"admin\"}", value = "")
+
   public Object getAdditionalProperties() {
     return additionalProperties;
   }
+
 
   public void setAdditionalProperties(Object additionalProperties) {
     this.additionalProperties = additionalProperties;
@@ -640,6 +818,7 @@ public class KeyManagerDTO {
         Objects.equals(this.displayName, keyManager.displayName) &&
         Objects.equals(this.type, keyManager.type) &&
         Objects.equals(this.description, keyManager.description) &&
+        Objects.equals(this.wellKnownEndpoint, keyManager.wellKnownEndpoint) &&
         Objects.equals(this.introspectionEndpoint, keyManager.introspectionEndpoint) &&
         Objects.equals(this.clientRegistrationEndpoint, keyManager.clientRegistrationEndpoint) &&
         Objects.equals(this.tokenEndpoint, keyManager.tokenEndpoint) &&
@@ -666,7 +845,7 @@ public class KeyManagerDTO {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, displayName, type, description, introspectionEndpoint, clientRegistrationEndpoint, tokenEndpoint, revokeEndpoint, userInfoEndpoint, authorizeEndpoint, certificates, issuer, scopeManagementEndpoint, availableGrantTypes, enableTokenGeneration, enableTokenEncryption, enableTokenHashing, enableMapOAuthConsumerApps, enableOAuthAppCreation, enableSelfValidationJWT, claimMapping, consumerKeyClaim, scopesClaim, tokenValidation, enabled, additionalProperties);
+    return Objects.hash(id, name, displayName, type, description, wellKnownEndpoint, introspectionEndpoint, clientRegistrationEndpoint, tokenEndpoint, revokeEndpoint, userInfoEndpoint, authorizeEndpoint, certificates, issuer, scopeManagementEndpoint, availableGrantTypes, enableTokenGeneration, enableTokenEncryption, enableTokenHashing, enableMapOAuthConsumerApps, enableOAuthAppCreation, enableSelfValidationJWT, claimMapping, consumerKeyClaim, scopesClaim, tokenValidation, enabled, additionalProperties);
   }
 
 
@@ -674,12 +853,12 @@ public class KeyManagerDTO {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class KeyManagerDTO {\n");
-    
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    displayName: ").append(toIndentedString(displayName)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    wellKnownEndpoint: ").append(toIndentedString(wellKnownEndpoint)).append("\n");
     sb.append("    introspectionEndpoint: ").append(toIndentedString(introspectionEndpoint)).append("\n");
     sb.append("    clientRegistrationEndpoint: ").append(toIndentedString(clientRegistrationEndpoint)).append("\n");
     sb.append("    tokenEndpoint: ").append(toIndentedString(tokenEndpoint)).append("\n");

@@ -1,7 +1,9 @@
 
+
 # ApplicationDTO
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **applicationId** | **String** |  |  [optional]
@@ -19,8 +21,9 @@ Name | Type | Description | Notes
 **hashEnabled** | **Boolean** |  |  [optional]
 
 
-<a name="TokenTypeEnum"></a>
+
 ## Enum: TokenTypeEnum
+
 Name | Value
 ---- | -----
 OAUTH | &quot;OAUTH&quot;

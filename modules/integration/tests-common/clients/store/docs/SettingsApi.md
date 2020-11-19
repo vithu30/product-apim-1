@@ -19,26 +19,35 @@ This operation can be used to retrieve the application attributes from configura
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.SettingsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.SettingsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-SettingsApi apiInstance = new SettingsApi();
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-try {
-    ApplicationAttributeListDTO result = apiInstance.settingsApplicationAttributesGet(ifNoneMatch);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling SettingsApi#settingsApplicationAttributesGet");
-    e.printStackTrace();
+    SettingsApi apiInstance = new SettingsApi(defaultClient);
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    try {
+      ApplicationAttributeListDTO result = apiInstance.settingsApplicationAttributesGet(ifNoneMatch);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling SettingsApi#settingsApplicationAttributesGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -58,8 +67,15 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Application attributes returned.  |  * Content-Type - The content type of the body.  <br>  |
+**404** | Not Found. Requested application does not exist.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 
 <a name="settingsGet"></a>
 # **settingsGet**
@@ -72,26 +88,35 @@ Retreive store settings
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.SettingsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.SettingsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-SettingsApi apiInstance = new SettingsApi();
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-try {
-    SettingsDTO result = apiInstance.settingsGet(xWSO2Tenant);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling SettingsApi#settingsGet");
-    e.printStackTrace();
+    SettingsApi apiInstance = new SettingsApi(defaultClient);
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    try {
+      SettingsDTO result = apiInstance.settingsGet(xWSO2Tenant);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling SettingsApi#settingsGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -111,6 +136,12 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Settings returned  |  -  |
+**404** | Not Found. Requested Settings does not exist.  |  -  |
 

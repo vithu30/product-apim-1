@@ -21,29 +21,38 @@ This operation can be used to retrieve the list of ratings of an API.  &#x60;X-W
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.RatingsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.RatingsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-RatingsApi apiInstance = new RatingsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-Integer limit = 25; // Integer | Maximum size of resource array to return. 
-Integer offset = 0; // Integer | Starting point within the complete list of items qualified. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-try {
-    RatingListDTO result = apiInstance.apisApiIdRatingsGet(apiId, limit, offset, xWSO2Tenant);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling RatingsApi#apisApiIdRatingsGet");
-    e.printStackTrace();
+    RatingsApi apiInstance = new RatingsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    Integer limit = 25; // Integer | Maximum size of resource array to return. 
+    Integer offset = 0; // Integer | Starting point within the complete list of items qualified. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    try {
+      RatingListDTO result = apiInstance.apisApiIdRatingsGet(apiId, limit, offset, xWSO2Tenant);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling RatingsApi#apisApiIdRatingsGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -66,8 +75,14 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Rating list returned.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 
 <a name="apisApiIdUserRatingDelete"></a>
 # **apisApiIdUserRatingDelete**
@@ -80,27 +95,36 @@ This operation can be used to delete logged in user API rating.  &#x60;X-WSO2-Te
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.RatingsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.RatingsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-RatingsApi apiInstance = new RatingsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-String ifMatch = "ifMatch_example"; // String | Validator for conditional requests; based on ETag. 
-try {
-    apiInstance.apisApiIdUserRatingDelete(apiId, xWSO2Tenant, ifMatch);
-} catch (ApiException e) {
-    System.err.println("Exception when calling RatingsApi#apisApiIdUserRatingDelete");
-    e.printStackTrace();
+    RatingsApi apiInstance = new RatingsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    String ifMatch = "ifMatch_example"; // String | Validator for conditional requests; based on ETag. 
+    try {
+      apiInstance.apisApiIdUserRatingDelete(apiId, xWSO2Tenant, ifMatch);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling RatingsApi#apisApiIdUserRatingDelete");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -122,8 +146,13 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Resource successfully deleted.  |  -  |
 
 <a name="apisApiIdUserRatingGet"></a>
 # **apisApiIdUserRatingGet**
@@ -136,28 +165,37 @@ This operation can be used to get the user rating of an API.  &#x60;X-WSO2-Tenan
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.RatingsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.RatingsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-RatingsApi apiInstance = new RatingsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-try {
-    RatingDTO result = apiInstance.apisApiIdUserRatingGet(apiId, xWSO2Tenant, ifNoneMatch);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling RatingsApi#apisApiIdUserRatingGet");
-    e.printStackTrace();
+    RatingsApi apiInstance = new RatingsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    try {
+      RatingDTO result = apiInstance.apisApiIdUserRatingGet(apiId, xWSO2Tenant, ifNoneMatch);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling RatingsApi#apisApiIdUserRatingGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -179,8 +217,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Rating returned.  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests.  <br>  * Last-Modified - Date and time the resource has been modified the last time. Used by caches, or in conditional requests.  <br>  |
+**304** | Not Modified. Empty body because the client already has the latest version of the requested resource.  |  -  |
+**404** | Not Found. Requested rating does not exist.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 
 <a name="apisApiIdUserRatingPut"></a>
 # **apisApiIdUserRatingPut**
@@ -193,28 +239,37 @@ This operation can be used to add or update an API rating.  &#x60;X-WSO2-Tenant&
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.RatingsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.RatingsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-RatingsApi apiInstance = new RatingsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-RatingDTO body = new RatingDTO(); // RatingDTO | Rating object that should to be added 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-try {
-    RatingDTO result = apiInstance.apisApiIdUserRatingPut(apiId, body, xWSO2Tenant);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling RatingsApi#apisApiIdUserRatingPut");
-    e.printStackTrace();
+    RatingsApi apiInstance = new RatingsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    RatingDTO body = new RatingDTO(); // RatingDTO | Rating object that should to be added 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    try {
+      RatingDTO result = apiInstance.apisApiIdUserRatingPut(apiId, body, xWSO2Tenant);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling RatingsApi#apisApiIdUserRatingPut");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -238,4 +293,11 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Successful response with the newly created or updated object as entity in the body.  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional request.  <br>  |
+**400** | Bad Request. Invalid request or validation error.  |  -  |
+**415** | Unsupported media type. The entity of the request was not in a supported format.  |  -  |
 

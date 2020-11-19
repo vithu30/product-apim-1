@@ -20,28 +20,37 @@ This operation is used to add configuration for the AbnormalRequestsPerMin alert
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.AlertConfigurationApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.AlertConfigurationApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-AlertConfigurationApi apiInstance = new AlertConfigurationApi();
-String alertType = "alertType_example"; // String | The alert type. 
-String configurationId = "configurationId_example"; // String | The alert configuration id. 
-AlertConfigInfoDTO body = new AlertConfigInfoDTO(); // AlertConfigInfoDTO | Configuration for AbnormalRequestCount alert type
-try {
-    AlertConfigDTO result = apiInstance.addAlertConfig(alertType, configurationId, body);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling AlertConfigurationApi#addAlertConfig");
-    e.printStackTrace();
+    AlertConfigurationApi apiInstance = new AlertConfigurationApi(defaultClient);
+    String alertType = "alertType_example"; // String | The alert type. 
+    String configurationId = "configurationId_example"; // String | The alert configuration id. 
+    Map<String, String> body = new HashMap(); // Map<String, String> | Configuration for AbnormalRequestCount alert type
+    try {
+      AlertConfigDTO result = apiInstance.addAlertConfig(alertType, configurationId, body);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling AlertConfigurationApi#addAlertConfig");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -51,7 +60,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **alertType** | **String**| The alert type.  |
  **configurationId** | **String**| The alert configuration id.  |
- **body** | [**AlertConfigInfoDTO**](AlertConfigInfoDTO.md)| Configuration for AbnormalRequestCount alert type |
+ **body** | [**Map&lt;String, String&gt;**](String.md)| Configuration for AbnormalRequestCount alert type |
 
 ### Return type
 
@@ -66,6 +75,13 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: application/json
 
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**201** | Created. Successful response with newly created object as entity. Location header contains URL of newly created entity.  |  * Location - The location of the newly created entity.  <br>  |
+**400** | Bad Request The request parameters validation failed.  |  -  |
+**500** | Internal Server Error An error occurred while retrieving subscribed alert types by user.  |  -  |
+
 <a name="deleteAlertConfig"></a>
 # **deleteAlertConfig**
 > deleteAlertConfig(alertType, configurationId)
@@ -77,26 +93,35 @@ This operation is used to delete configuration from the AbnormalRequestsPerMin a
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.AlertConfigurationApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.AlertConfigurationApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-AlertConfigurationApi apiInstance = new AlertConfigurationApi();
-String alertType = "alertType_example"; // String | The alert type. 
-String configurationId = "configurationId_example"; // String | The alert configuration id. 
-try {
-    apiInstance.deleteAlertConfig(alertType, configurationId);
-} catch (ApiException e) {
-    System.err.println("Exception when calling AlertConfigurationApi#deleteAlertConfig");
-    e.printStackTrace();
+    AlertConfigurationApi apiInstance = new AlertConfigurationApi(defaultClient);
+    String alertType = "alertType_example"; // String | The alert type. 
+    String configurationId = "configurationId_example"; // String | The alert configuration id. 
+    try {
+      apiInstance.deleteAlertConfig(alertType, configurationId);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling AlertConfigurationApi#deleteAlertConfig");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -117,8 +142,16 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. The alert config is deleted successfully.  |  -  |
+**400** | Bad Request The request parameters validation failed.  |  -  |
+**404** | Not Found. The provided alert configuration is not found.  |  -  |
+**500** | Internal Server Error An error occurred while retrieving subscribed alert types by user.  |  -  |
 
 <a name="getAllAlertConfigs"></a>
 # **getAllAlertConfigs**
@@ -131,26 +164,35 @@ This operation is used to get all configurations of the AbnormalRequestsPerMin a
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.AlertConfigurationApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.AlertConfigurationApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-AlertConfigurationApi apiInstance = new AlertConfigurationApi();
-String alertType = "alertType_example"; // String | The alert type. 
-try {
-    AlertConfigListDTO result = apiInstance.getAllAlertConfigs(alertType);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling AlertConfigurationApi#getAllAlertConfigs");
-    e.printStackTrace();
+    AlertConfigurationApi apiInstance = new AlertConfigurationApi(defaultClient);
+    String alertType = "alertType_example"; // String | The alert type. 
+    try {
+      AlertConfigListDTO result = apiInstance.getAllAlertConfigs(alertType);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling AlertConfigurationApi#getAllAlertConfigs");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -170,6 +212,12 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. The store alert configuration.  |  * Content-Type - The content type of the body.  <br>  |
+**500** | Internal Server Error An error occurred while retrieving subscribed alert types by user.  |  -  |
 

@@ -1,7 +1,9 @@
 
+
 # SubscriptionDTO
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **subscriptionId** | **String** | The UUID of the subscription |  [optional]
@@ -15,8 +17,9 @@ Name | Type | Description | Notes
 **redirectionParams** | **String** | A url and other parameters the subscriber can be redirected. |  [optional]
 
 
-<a name="StatusEnum"></a>
+
 ## Enum: StatusEnum
+
 Name | Value
 ---- | -----
 BLOCKED | &quot;BLOCKED&quot;

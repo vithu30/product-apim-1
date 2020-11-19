@@ -361,7 +361,7 @@ public class RestAPIStoreImpl {
 
         ApiResponse<APIKeyDTO> response = apiKeysApi
                 .applicationsApplicationIdApiKeysKeyTypeGeneratePostWithHttpInfo(applicationId, keyType,
-                        keyGenerateRequestDTO, null);
+                         null, keyGenerateRequestDTO);
 
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
         return response.getData();

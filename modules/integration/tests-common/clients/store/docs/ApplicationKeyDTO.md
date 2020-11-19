@@ -1,7 +1,9 @@
 
+
 # ApplicationKeyDTO
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **keyMappingId** | **String** | Key Manager Mapping UUID |  [optional]
@@ -14,11 +16,12 @@ Name | Type | Description | Notes
 **keyType** | [**KeyTypeEnum**](#KeyTypeEnum) | Describes to which endpoint the key belongs |  [optional]
 **groupId** | **String** | Application group id (if any). |  [optional]
 **token** | [**ApplicationTokenDTO**](ApplicationTokenDTO.md) |  |  [optional]
-**additionalProperties** | **Object** | additionalProperties (if any). |  [optional]
+**additionalProperties** | [**Object**](.md) | additionalProperties (if any). |  [optional]
 
 
-<a name="KeyTypeEnum"></a>
+
 ## Enum: KeyTypeEnum
+
 Name | Value
 ---- | -----
 PRODUCTION | &quot;PRODUCTION&quot;

@@ -19,30 +19,39 @@ Get available Throttling Policies
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ThrottlingPoliciesApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ThrottlingPoliciesApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ThrottlingPoliciesApi apiInstance = new ThrottlingPoliciesApi();
-String policyLevel = "policyLevel_example"; // String | List Application or Subscription type thro. 
-Integer limit = 25; // Integer | Maximum size of resource array to return. 
-Integer offset = 0; // Integer | Starting point within the complete list of items qualified. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-try {
-    List<ThrottlingPolicyListDTO> result = apiInstance.throttlingPoliciesPolicyLevelGet(policyLevel, limit, offset, ifNoneMatch, xWSO2Tenant);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ThrottlingPoliciesApi#throttlingPoliciesPolicyLevelGet");
-    e.printStackTrace();
+    ThrottlingPoliciesApi apiInstance = new ThrottlingPoliciesApi(defaultClient);
+    String policyLevel = "policyLevel_example"; // String | List Application or Subscription type thro. 
+    Integer limit = 25; // Integer | Maximum size of resource array to return. 
+    Integer offset = 0; // Integer | Starting point within the complete list of items qualified. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    try {
+      List<ThrottlingPolicyListDTO> result = apiInstance.throttlingPoliciesPolicyLevelGet(policyLevel, limit, offset, ifNoneMatch, xWSO2Tenant);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ThrottlingPoliciesApi#throttlingPoliciesPolicyLevelGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -66,8 +75,15 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. List of throttling policies returned.  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests.  <br>  |
+**304** | Not Modified. Empty body because the client has already the latest version of the requested resource.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 
 <a name="throttlingPoliciesPolicyLevelPolicyIdGet"></a>
 # **throttlingPoliciesPolicyLevelPolicyIdGet**
@@ -80,29 +96,38 @@ This operation can be used to retrieve details of a single throttling policy by 
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ThrottlingPoliciesApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ThrottlingPoliciesApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ThrottlingPoliciesApi apiInstance = new ThrottlingPoliciesApi();
-String policyId = "policyId_example"; // String | Policy Id represented as a UUID 
-String policyLevel = "policyLevel_example"; // String | List Application or Subscription type thro. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-try {
-    ThrottlingPolicyDTO result = apiInstance.throttlingPoliciesPolicyLevelPolicyIdGet(policyId, policyLevel, xWSO2Tenant, ifNoneMatch);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ThrottlingPoliciesApi#throttlingPoliciesPolicyLevelPolicyIdGet");
-    e.printStackTrace();
+    ThrottlingPoliciesApi apiInstance = new ThrottlingPoliciesApi(defaultClient);
+    String policyId = "policyId_example"; // String | Policy Id represented as a UUID 
+    String policyLevel = "policyLevel_example"; // String | List Application or Subscription type thro. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    try {
+      ThrottlingPolicyDTO result = apiInstance.throttlingPoliciesPolicyLevelPolicyIdGet(policyId, policyLevel, xWSO2Tenant, ifNoneMatch);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ThrottlingPoliciesApi#throttlingPoliciesPolicyLevelPolicyIdGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -125,6 +150,14 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Throttling Policy returned  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests.  <br>  * Last-Modified - Date and time the resource has been modifed the last time. Used by caches, or in conditional requests.  <br>  |
+**304** | Not Modified. Empty body because the client has already the latest version of the requested resource.  |  -  |
+**404** | Not Found. Requested Throttling Policy does not exist.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported.  |  -  |
 

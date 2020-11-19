@@ -24,28 +24,37 @@ Using this operation, you can retrieve complete details of a single API. You nee
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApIsApi apiInstance = new ApIsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-try {
-    APIDTO result = apiInstance.apisApiIdGet(apiId, xWSO2Tenant, ifNoneMatch);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApIsApi#apisApiIdGet");
-    e.printStackTrace();
+    ApIsApi apiInstance = new ApIsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    try {
+      APIDTO result = apiInstance.apisApiIdGet(apiId, xWSO2Tenant, ifNoneMatch);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApIsApi#apisApiIdGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -67,8 +76,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Requested API is returned  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests.  <br>  * Last-Modified - Date and time the resource has been modifed the last time. Used by caches, or in conditional requests.  <br>  |
+**304** | Not Modified. Empty body because the client has already the latest version of the requested resource.  |  -  |
+**404** | Not Found. Requested API does not exist.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 
 <a name="apisApiIdGraphqlSchemaGet"></a>
 # **apisApiIdGraphqlSchemaGet**
@@ -81,27 +98,36 @@ You can use this operation to retrieve the swagger definition of an API.   &#x60
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApIsApi apiInstance = new ApIsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-try {
-    apiInstance.apisApiIdGraphqlSchemaGet(apiId, ifNoneMatch, xWSO2Tenant);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApIsApi#apisApiIdGraphqlSchemaGet");
-    e.printStackTrace();
+    ApIsApi apiInstance = new ApIsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    try {
+      apiInstance.apisApiIdGraphqlSchemaGet(apiId, ifNoneMatch, xWSO2Tenant);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApIsApi#apisApiIdGraphqlSchemaGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -123,8 +149,16 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Requested swagger document of the API is returned  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests.  <br>  * Last-Modified - Date and time the resource has been modifed the last time. Used by caches, or in conditional requests.  <br>  |
+**304** | Not Modified. Empty body because the client has already the latest version of the requested resource.  |  -  |
+**404** | Not Found. Requested API does not exist.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 
 <a name="apisApiIdSubscriptionPoliciesGet"></a>
 # **apisApiIdSubscriptionPoliciesGet**
@@ -137,28 +171,37 @@ This operation can be used to retrieve details of the subscription throttling po
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApIsApi apiInstance = new ApIsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-try {
-    ThrottlingPolicyDTO result = apiInstance.apisApiIdSubscriptionPoliciesGet(apiId, xWSO2Tenant, ifNoneMatch);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApIsApi#apisApiIdSubscriptionPoliciesGet");
-    e.printStackTrace();
+    ApIsApi apiInstance = new ApIsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    try {
+      ThrottlingPolicyDTO result = apiInstance.apisApiIdSubscriptionPoliciesGet(apiId, xWSO2Tenant, ifNoneMatch);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApIsApi#apisApiIdSubscriptionPoliciesGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -180,8 +223,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Throttling Policy returned  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests.  <br>  * Last-Modified - Date and time the resource has been modifed the last time. Used by caches, or in conditional requests.  <br>  |
+**304** | Not Modified. Empty body because the client has already the latest version of the requested resource.  |  -  |
+**404** | Not Found. Requested Throttling Policy does not exist.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported.  |  -  |
 
 <a name="apisApiIdSwaggerGet"></a>
 # **apisApiIdSwaggerGet**
@@ -194,30 +245,39 @@ You can use this operation to retrieve the swagger definition of an API.   &#x60
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApIsApi apiInstance = new ApIsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-String labelName = "labelName_example"; // String | Name of the API microgateway labels 
-String environmentName = "environmentName_example"; // String | Name of the API gateway environment. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-try {
-    String result = apiInstance.apisApiIdSwaggerGet(apiId, labelName, environmentName, ifNoneMatch, xWSO2Tenant);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApIsApi#apisApiIdSwaggerGet");
-    e.printStackTrace();
+    ApIsApi apiInstance = new ApIsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    String labelName = "labelName_example"; // String | Name of the API microgateway labels 
+    String environmentName = "environmentName_example"; // String | Name of the API gateway environment. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    try {
+      String result = apiInstance.apisApiIdSwaggerGet(apiId, labelName, environmentName, ifNoneMatch, xWSO2Tenant);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApIsApi#apisApiIdSwaggerGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -241,8 +301,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Requested swagger document of the API is returned  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests.  <br>  * Last-Modified - Date and time the resource has been modifed the last time. Used by caches, or in conditional requests.  <br>  |
+**304** | Not Modified. Empty body because the client has already the latest version of the requested resource.  |  -  |
+**404** | Not Found. Requested API does not exist.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 
 <a name="apisApiIdThumbnailGet"></a>
 # **apisApiIdThumbnailGet**
@@ -255,27 +323,36 @@ This operation can be used to download a thumbnail image of an API.  &#x60;X-WSO
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApIsApi apiInstance = new ApIsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-try {
-    apiInstance.apisApiIdThumbnailGet(apiId, xWSO2Tenant, ifNoneMatch);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApIsApi#apisApiIdThumbnailGet");
-    e.printStackTrace();
+    ApIsApi apiInstance = new ApIsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    try {
+      apiInstance.apisApiIdThumbnailGet(apiId, xWSO2Tenant, ifNoneMatch);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApIsApi#apisApiIdThumbnailGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -297,8 +374,16 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Thumbnail image returned  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests.  <br>  * Last-Modified - Date and time the resource has been modifed the last time. Used by caches, or in conditional requests (Will be supported in future).  <br>  * Content-Type - The content type of the body.  <br>  |
+**304** | Not Modified. Empty body because the client has already the latest version of the requested resource.  |  -  |
+**404** | Not Found. Requested Document does not exist.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 
 <a name="apisGet"></a>
 # **apisGet**
@@ -311,30 +396,39 @@ This operation provides you a list of available APIs qualifying under a given se
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApIsApi apiInstance = new ApIsApi();
-Integer limit = 25; // Integer | Maximum size of resource array to return. 
-Integer offset = 0; // Integer | Starting point within the complete list of items qualified. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-String query = "query_example"; // String | **Search condition**.  You can search in attributes by using an **\"<attribute>:\"** modifier.  Eg. \"provider:wso2\" will match an API if the provider of the API is exactly \"wso2\".  Additionally you can use wildcards.  Eg. \"provider:wso2*\" will match an API if the provider of the API starts with \"wso2\".  Supported attribute modifiers are [**version, context, status, description, subcontext, doc, provider, tag**]  If no advanced attribute modifier has been specified, search will match the given query string against API Name. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-try {
-    APIListDTO result = apiInstance.apisGet(limit, offset, xWSO2Tenant, query, ifNoneMatch);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApIsApi#apisGet");
-    e.printStackTrace();
+    ApIsApi apiInstance = new ApIsApi(defaultClient);
+    Integer limit = 25; // Integer | Maximum size of resource array to return. 
+    Integer offset = 0; // Integer | Starting point within the complete list of items qualified. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    String query = "query_example"; // String | **Search condition**.  You can search in attributes by using an **\"<attribute>:\"** modifier.  Eg. \"provider:wso2\" will match an API if the provider of the API is exactly \"wso2\".  Additionally you can use wildcards.  Eg. \"provider:wso2*\" will match an API if the provider of the API starts with \"wso2\".  Supported attribute modifiers are [**version, context, status, description, subcontext, doc, provider, tag**]  If no advanced attribute modifier has been specified, search will match the given query string against API Name. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    try {
+      APIListDTO result = apiInstance.apisGet(limit, offset, xWSO2Tenant, query, ifNoneMatch);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApIsApi#apisGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -358,8 +452,14 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. List of qualifying APIs is returned.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 
 <a name="getWSDLOfAPI"></a>
 # **getWSDLOfAPI**
@@ -372,29 +472,38 @@ This operation can be used to retrieve the swagger definition of an API.
 ### Example
 ```java
 // Import classes:
-//import org.wso2.am.integration.clients.store.api.ApiClient;
-//import org.wso2.am.integration.clients.store.api.ApiException;
-//import org.wso2.am.integration.clients.store.api.Configuration;
-//import org.wso2.am.integration.clients.store.api.auth.*;
-//import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
+import org.wso2.am.integration.clients.store.api.ApiClient;
+import org.wso2.am.integration.clients.store.api.ApiException;
+import org.wso2.am.integration.clients.store.api.Configuration;
+import org.wso2.am.integration.clients.store.api.auth.*;
+import org.wso2.am.integration.clients.store.api.models.*;
+import org.wso2.am.integration.clients.store.api.v1.ApIsApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://apis.wso2.com/api/am/store/v1");
+    
+    // Configure OAuth2 access token for authorization: OAuth2Security
+    OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
+    OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
 
-// Configure OAuth2 access token for authorization: OAuth2Security
-OAuth OAuth2Security = (OAuth) defaultClient.getAuthentication("OAuth2Security");
-OAuth2Security.setAccessToken("YOUR ACCESS TOKEN");
-
-ApIsApi apiInstance = new ApIsApi();
-String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
-String labelName = "labelName_example"; // String | Name of the API microgateway labels 
-String environmentName = "environmentName_example"; // String | Name of the API gateway environment. 
-String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
-String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
-try {
-    apiInstance.getWSDLOfAPI(apiId, labelName, environmentName, ifNoneMatch, xWSO2Tenant);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ApIsApi#getWSDLOfAPI");
-    e.printStackTrace();
+    ApIsApi apiInstance = new ApIsApi(defaultClient);
+    String apiId = "apiId_example"; // String | **API ID** consisting of the **UUID** of the API. 
+    String labelName = "labelName_example"; // String | Name of the API microgateway labels 
+    String environmentName = "environmentName_example"; // String | Name of the API gateway environment. 
+    String ifNoneMatch = "ifNoneMatch_example"; // String | Validator for conditional requests; based on the ETag of the formerly retrieved variant of the resourec. 
+    String xWSO2Tenant = "xWSO2Tenant_example"; // String | For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be   retirieved from. 
+    try {
+      apiInstance.getWSDLOfAPI(apiId, labelName, environmentName, ifNoneMatch, xWSO2Tenant);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ApIsApi#getWSDLOfAPI");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
 }
 ```
 
@@ -418,6 +527,14 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json, application/wsdl, application/zip
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. Requested WSDL document of the API is returned  |  * ETag - Entity Tag of the response resource. Used by caches, or in conditional requests (Will be supported in future).  <br>  * Last-Modified - Date and time the resource has been modifed the last time. Used by caches, or in conditional requests (Will be supported in future).  <br>  |
+**304** | Not Modified. Empty body because the client has already the latest version of the requested resource (Will be supported in future).  |  -  |
+**404** | Not Found. Requested API does not exist.  |  -  |
+**406** | Not Acceptable. The requested media type is not supported  |  -  |
 

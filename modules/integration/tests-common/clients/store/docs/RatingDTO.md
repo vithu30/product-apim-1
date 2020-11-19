@@ -1,7 +1,9 @@
 
+
 # RatingDTO
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ratingId** | **String** |  |  [optional]

@@ -65,12 +65,14 @@ public class DtoFactory {
     public static ApplicationThrottlePolicyDTO createApplicationThrottlePolicyDTO(String policyName, String displayName,
             String description, boolean isDeployed, ThrottleLimitDTO defaultLimit) {
 
-        return new ApplicationThrottlePolicyDTO().
+        ApplicationThrottlePolicyDTO applicationThrottlePolicyDTO = new ApplicationThrottlePolicyDTO();
+        applicationThrottlePolicyDTO.
+                defaultLimit(defaultLimit).
                 policyName(policyName).
                 displayName(displayName).
                 description(description).
-                isDeployed(isDeployed).
-                defaultLimit(defaultLimit);
+                isDeployed(isDeployed);
+        return  applicationThrottlePolicyDTO;
     }
 
     /**
@@ -148,11 +150,8 @@ public class DtoFactory {
             int graphQLMaxComplexity, int graphQLMaxDepth, int rateLimitCount, String rateLimitTimeUnit,
             List<CustomAttributeDTO> customAttributes, boolean stopQuotaOnReach, String billingPlan) {
 
-        return new SubscriptionThrottlePolicyDTO().
-                policyName(policyName).
-                displayName(displayName).
-                description(description).
-                isDeployed(isDeployed).
+        SubscriptionThrottlePolicyDTO subscriptionThrottlePolicyDTO = new SubscriptionThrottlePolicyDTO();
+        subscriptionThrottlePolicyDTO.
                 defaultLimit(defaultLimit).
                 graphQLMaxComplexity(graphQLMaxComplexity).
                 graphQLMaxDepth(graphQLMaxDepth).
@@ -160,7 +159,12 @@ public class DtoFactory {
                 rateLimitTimeUnit(rateLimitTimeUnit).
                 customAttributes(customAttributes).
                 stopOnQuotaReach(stopQuotaOnReach).
-                billingPlan(billingPlan);
+                billingPlan(billingPlan).
+                policyName(policyName).
+                displayName(displayName).
+                description(description).
+                isDeployed(isDeployed);
+        return subscriptionThrottlePolicyDTO;
     }
 
     /**
@@ -175,13 +179,13 @@ public class DtoFactory {
      */
     public static CustomRuleDTO createCustomThrottlePolicyDTO(String policyName, String description, boolean isDeployed,
             String siddhiQuery, String keyTemplate) {
-
-        return new CustomRuleDTO().
+        CustomRuleDTO customRuleDTO = new CustomRuleDTO();
+        customRuleDTO.siddhiQuery(siddhiQuery).
+                keyTemplate(keyTemplate).
                 policyName(policyName).
                 description(description).
-                isDeployed(isDeployed).
-                siddhiQuery(siddhiQuery).
-                keyTemplate(keyTemplate);
+                isDeployed(isDeployed);
+        return customRuleDTO;
     }
 
     /**
@@ -301,14 +305,15 @@ public class DtoFactory {
     public static AdvancedThrottlePolicyDTO createAdvancedThrottlePolicyDTO(String policyName, String displayName,
             String description, boolean isDeployed, ThrottleLimitDTO defaultLimit,
             List<ConditionalGroupDTO> conditionalGroups) {
-
-        return new AdvancedThrottlePolicyDTO().
+        AdvancedThrottlePolicyDTO advancedThrottlePolicyDTO = new AdvancedThrottlePolicyDTO();
+        advancedThrottlePolicyDTO.
+                defaultLimit(defaultLimit).
+                conditionalGroups(conditionalGroups).
                 policyName(policyName).
                 displayName(displayName).
                 description(description).
-                isDeployed(isDeployed).
-                defaultLimit(defaultLimit).
-                conditionalGroups(conditionalGroups);
+                isDeployed(isDeployed);
+        return advancedThrottlePolicyDTO;
     }
 
     /**

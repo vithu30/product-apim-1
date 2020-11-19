@@ -1,7 +1,9 @@
 
+
 # ApplicationAttributeDTO
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **description** | **String** | description of the application attribute |  [optional]

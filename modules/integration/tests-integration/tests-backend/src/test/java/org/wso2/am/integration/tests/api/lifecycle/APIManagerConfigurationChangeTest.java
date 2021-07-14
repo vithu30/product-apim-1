@@ -26,6 +26,7 @@ import org.wso2.am.integration.test.ClientAuthenticator;
 import org.wso2.am.integration.test.impl.RestAPIAdminImpl;
 import org.wso2.am.integration.test.impl.RestAPIPublisherImpl;
 import org.wso2.am.integration.test.impl.RestAPIStoreImpl;
+import org.wso2.am.integration.test.impl.RestAPIServiceCatalogImpl;
 import org.wso2.am.integration.test.utils.base.APIMIntegrationConstants;
 import org.wso2.am.integration.test.utils.bean.APIMURLBean;
 import org.wso2.am.integration.test.utils.bean.DCRParamRequest;
@@ -77,6 +78,13 @@ public class APIManagerConfigurationChangeTest extends APIManagerLifecycleBaseTe
                 RestAPIAdminImpl.username, RestAPIAdminImpl.password,
                 APIMIntegrationConstants.SUPER_TENANT_DOMAIN);
         ClientAuthenticator.makeDCRRequest(adminPortalParamRequest);
+
+        DCRParamRequest serviceCatalogParamRequest = new DCRParamRequest(RestAPIServiceCatalogImpl.appName,
+                RestAPIServiceCatalogImpl.callBackURL, RestAPIServiceCatalogImpl.tokenScope,
+                RestAPIServiceCatalogImpl.appOwner, RestAPIServiceCatalogImpl.grantType, dcrURL,
+                RestAPIServiceCatalogImpl.appOwner, RestAPIServiceCatalogImpl.password,
+                APIMIntegrationConstants.SUPER_TENANT_DOMAIN);
+        ClientAuthenticator.makeDCRRequest(serviceCatalogParamRequest);
 
         super.init();
         String testArtifactPath = TestConfigurationProvider.getResourceLocation() + File.separator + "artifacts" +
